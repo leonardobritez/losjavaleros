@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -21,10 +23,11 @@ public class Rol {
     private Long id;
 
     private String nombre;
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "roles")
     private Collection<Usuario> users;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL,fetch=FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
     @JoinTable(
             name = "roles_privilegios",
             joinColumns = @JoinColumn(

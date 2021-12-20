@@ -9,4 +9,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     @Override
     void delete(Usuario user);
+
+    Usuario findByNombreUsuario(String nombre);
 }

@@ -1,5 +1,6 @@
 package javaleros.frba.javaleros.security;
 
+import antlr.StringUtils;
 import javaleros.frba.javaleros.models.Privilegio;
 import javaleros.frba.javaleros.models.Rol;
 import javaleros.frba.javaleros.models.Usuario;
@@ -17,10 +18,10 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+
+import static javaleros.frba.javaleros.models.Constants.DUENIO;
+
 @Service
 public class MyUserDetailsService  implements UserDetailsService {
 
@@ -38,15 +39,17 @@ public class MyUserDetailsService  implements UserDetailsService {
     }
 
 
+
+
     @Override
     public UserDetails loadUserByUsername(String email)
             throws UsernameNotFoundException {
 
-        Usuario user = userRepository.findByEmail(email);
+        Usuario user = userRepository.findByNombreUsuario(email);
         if (user == null) {
             return new org.springframework.security.core.userdetails.User(
                     " ", " ", true, true, true, true,
-                    getAuthorities(Arrays.asList(roleRepository.findByNombre("ROLE_USER"))));
+                    getAuthorities(Arrays.asList(roleRepository.findByNombre(DUENIO))));
         }
 
         return new org.springframework.security.core.userdetails.User(
