@@ -20,6 +20,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import static javaleros.frba.javaleros.models.Constants.*;
+
 @Component
 public class SetupDataLoader implements
         ApplicationListener<ContextRefreshedEvent> {
@@ -57,15 +59,20 @@ public class SetupDataLoader implements
 
         List<Privilegio> adminPrivilegios = Arrays.asList(
                 readPrivilegio, writePrivilegio);
-        createRolIfNotFound("ROLE_ADMIN", adminPrivilegios);
-        createRolIfNotFound("ROLE_USER", Arrays.asList(readPrivilegio));
+        createRolIfNotFound(ADMIN, adminPrivilegios);
+        createRolIfNotFound(VOLUNTARIO, Arrays.asList(readPrivilegio));
+        createRolIfNotFound(DUENIO, Arrays.asList(readPrivilegio));
+        createRolIfNotFound(RESCATISTA, Arrays.asList(readPrivilegio));
 
-        Rol adminRol = rolRepository.findByNombre("ROLE_ADMIN");
+
+
+        Rol adminRol = rolRepository.findByNombre(ADMIN);
         Usuario user = new Usuario();
         user.setNombre("Test");
         user.setApellido("Test");
-        user.setContrasenia("test1234.");
+        user.setNombreUsuario("admin");
         user.setEmail("test@test.com");
+        user.setContrasenia("Test1234.");
         user.setRoles(Arrays.asList(adminRol));
         userRepository.save(user);
 

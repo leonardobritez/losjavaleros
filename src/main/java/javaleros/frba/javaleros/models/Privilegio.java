@@ -20,7 +20,7 @@ public class Privilegio {
 
     private String name;
 
-    @ManyToMany(mappedBy = "privileges")
+    @ManyToMany(mappedBy = "privilegios")
     private Collection<Rol> roles;
 
 

@@ -25,6 +25,7 @@ public class Usuario {
     private String apellido;
     private String email;
     private String contrasenia;
+    private String nombreUsuario;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Collection<Rol> roles;
    // @OneToMany(cascade = CascadeType.ALL)
@@ -39,6 +40,7 @@ public class Usuario {
         this.email = email;
         this.contrasenia = contrasenia;
         this.roles = roles;
+        this.nombreUsuario = nombreUsuario;
        // this.mascotas = mascotas;
     }
 
@@ -48,6 +50,7 @@ public class Usuario {
         this.dni = dni;
         this.nombre = firstName;
         this.apellido = lastName;
+        this.nombreUsuario = nombreUsuario;
         this.email = email;
         this.roles = roles;
         setContrasenia(contrasenia);
@@ -55,7 +58,7 @@ public class Usuario {
 
     public void setContrasenia(String contrasenia) throws InvalidPasswordException {
 
-        RuleResult validate = PasswordValidatorSingleton.getInstance().validate(this.email, contrasenia);
+        RuleResult validate = PasswordValidatorSingleton.getInstance().validate(this.nombreUsuario, contrasenia);
         if(validate.isValid()) {
             contrasenia = new BCryptPasswordEncoder().encode(contrasenia);
             this.contrasenia = contrasenia;

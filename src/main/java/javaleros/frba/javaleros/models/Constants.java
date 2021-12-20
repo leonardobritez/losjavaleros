@@ -2,9 +2,9 @@ package javaleros.frba.javaleros.models;
 
 public class Constants {
 
-    final String VOLUNTARIO = "VOLUNTARIO";
-    final String ADMIN = "ADMIN";
-    final String RESCATISTA = "RESCATISTA";
-    final String DUENIO = "DUENIO";
+    public final static String VOLUNTARIO = "VOLUNTARIO";
+    public final static String ADMIN = "ADMIN";
+    public final static String RESCATISTA = "RESCATISTA";
+    public final static String DUENIO = "DUENIO";
 
 }

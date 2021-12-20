@@ -17,6 +17,7 @@ import java.util.Collection;
 public class Rol {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String nombre;
