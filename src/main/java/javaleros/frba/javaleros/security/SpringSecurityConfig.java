@@ -20,8 +20,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.cors.CorsConfiguration;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 @Order(101)
 @EnableWebSecurity
@@ -68,6 +70,14 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     // disable frame options
     http.headers().frameOptions().disable();
     http.addFilterBefore(tokenFilter(), UsernamePasswordAuthenticationFilter.class);
+
+    http.cors().configurationSource(request -> {
+      var cors = new CorsConfiguration();
+      cors.setAllowedOrigins(List.of("http://localhost:3000"));
+      cors.setAllowedMethods(List.of("GET","POST", "PUT", "DELETE", "OPTIONS"));
+      cors.setAllowedHeaders(List.of("*"));
+      return cors;
+    });
 
   }
 
