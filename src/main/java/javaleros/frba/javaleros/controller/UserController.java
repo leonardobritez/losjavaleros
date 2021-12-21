@@ -28,12 +28,10 @@ public class UserController {
     @ResponseBody
     public Object login( @RequestBody LoginRequest loginRequest)  {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+                new UsernamePasswordAuthenticationToken(loginRequest.getUsuario(), loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token = tokenRepository.save(loginRequest.getUsername());
-
-
+        String token = tokenRepository.save(loginRequest.getUsuario());
 
         return token;
 
@@ -41,7 +39,7 @@ public class UserController {
 
     @GetMapping("/ping")
     public String ping(){
-        return "ping";
+        return "pong";
     }
 
 
