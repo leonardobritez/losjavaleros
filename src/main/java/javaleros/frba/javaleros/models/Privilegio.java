@@ -1,5 +1,6 @@
 package javaleros.frba.javaleros.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,8 +20,8 @@ public class Privilegio {
     private Long id;
 
     private String name;
-
-    @ManyToMany(fetch = FetchType.EAGER,mappedBy = "privilegios")
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY,mappedBy = "privilegios")
     private Collection<Rol> roles;
 
 

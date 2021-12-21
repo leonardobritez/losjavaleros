@@ -1,6 +1,7 @@
 package javaleros.frba.javaleros.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,8 @@ public class Rol {
     private Long id;
 
     private String nombre;
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "roles")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "roles")
+    @JsonIgnore
     private Collection<Usuario> users;
 
     @ManyToMany(cascade = CascadeType.ALL,fetch=FetchType.EAGER)

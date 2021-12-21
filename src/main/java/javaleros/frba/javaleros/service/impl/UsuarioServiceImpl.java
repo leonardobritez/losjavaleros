@@ -6,6 +6,7 @@ import javaleros.frba.javaleros.models.dto.UsuarioDto;
 import javaleros.frba.javaleros.models.exeptions.InvalidPasswordException;
 import javaleros.frba.javaleros.repository.RolRepository;
 import javaleros.frba.javaleros.repository.UsuarioRepository;
+import javaleros.frba.javaleros.security.storage.TokenRepository;
 import javaleros.frba.javaleros.service.UsuarioService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import java.util.Optional;
 public class UsuarioServiceImpl implements UsuarioService {
 
     private UsuarioRepository userRepository;
+    private TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final WebApplicationContext applicationContext;
     private RolRepository roleRepository;
@@ -34,6 +36,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     public void completeSetup() {
         userRepository = applicationContext.getBean(UsuarioRepository.class);
         roleRepository = applicationContext.getBean(RolRepository.class);
+        tokenRepository = applicationContext.getBean(TokenRepository.class);
     }
 
 
@@ -57,7 +60,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Usuario getUsuario(String verificationToken) {
-        return null;
+        String username= tokenRepository.findBytoken(verificationToken);
+        return userRepository.findByNombreUsuario(username);
     }
 
     @Override
