@@ -1,17 +1,18 @@
 package javaleros.frba.javaleros.service.impl;
 
+import javaleros.frba.javaleros.exceptions.EmailException;
 import javaleros.frba.javaleros.models.Usuario;
 import javaleros.frba.javaleros.models.dto.UsuarioDto;
+import javaleros.frba.javaleros.models.exeptions.InvalidPasswordException;
 import javaleros.frba.javaleros.repository.RolRepository;
 import javaleros.frba.javaleros.repository.UsuarioRepository;
 import javaleros.frba.javaleros.service.UsuarioService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.PostConstruct;
-import javax.transaction.Transactional;
+
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -37,19 +38,20 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 
     @Override
-    public Usuario registerNewUsuarioAccount(UsuarioDto accountDto) throws Exception {
-        if (emailExists(accountDto.getEmail())) {
-            throw new Exception(
-                    ("There is an account with that email adress: " + accountDto.getEmail()));
+    public Usuario registerNewUsuarioAccount(UsuarioDto usuarioDto) throws EmailException, InvalidPasswordException {
+        if (emailExists(usuarioDto.getEmail())) {
+            throw new EmailException(
+                    ("There is an account with that email adress: " + usuarioDto.getEmail()));
         }
         Usuario user = new Usuario();
 
-        user.setNombre(accountDto.getFirstName());
-        user.setApellido(accountDto.getLastName());
-        user.setContrasenia(passwordEncoder.encode(accountDto.getPassword()));
-        user.setEmail(accountDto.getEmail());
+        user.setNombre(usuarioDto.getFirstName());
+        user.setApellido(usuarioDto.getLastName());
+        user.setNombreUsuario(usuarioDto.getUsername());
+        user.setContrasenia(passwordEncoder.encode(usuarioDto.getPassword()));
+        user.setEmail(usuarioDto.getEmail());
 
-        user.setRoles(Arrays.asList(roleRepository.findByNombre(accountDto.getRol())));
+        user.setRoles(Arrays.asList(roleRepository.findByNombre(usuarioDto.getRol())));
         return userRepository.save(user);
     }
 

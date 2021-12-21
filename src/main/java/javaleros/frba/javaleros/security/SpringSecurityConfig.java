@@ -28,81 +28,85 @@ import javax.annotation.PostConstruct;
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
-    private final WebApplicationContext applicationContext;
+  private final WebApplicationContext applicationContext;
 
-    private MyUserDetailsService userDetailsService;
+  private MyUserDetailsService userDetailsService;
 
-    public SpringSecurityConfig(WebApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-    }
-
-
-    @PostConstruct
-    public void completeSetup() {
-        userDetailsService = applicationContext.getBean(MyUserDetailsService.class);
-    }
+  public SpringSecurityConfig(WebApplicationContext applicationContext) {
+    this.applicationContext = applicationContext;
+  }
 
 
-    @Override
-    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService)
-                .passwordEncoder(encoder())
-                .and()
-                .authenticationProvider(authenticationProvider());
-    }
+  @PostConstruct
+  public void completeSetup() {
+    userDetailsService = applicationContext.getBean(MyUserDetailsService.class);
+  }
 
-    @Override
-    public void configure(WebSecurity web) {
-        web.ignoring()
-                .antMatchers("/resources/**")
-                .antMatchers("/h2/**");
-    }
 
-    @Override
-    protected void configure(final HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.POST,"/user/login").permitAll()
-                .anyRequest().authenticated();
+  @Override
+  protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
+    auth.userDetailsService(userDetailsService)
+        .passwordEncoder(encoder())
+        .and()
+        .authenticationProvider(authenticationProvider());
+  }
 
-        http.addFilterBefore(tokenFilter(), UsernamePasswordAuthenticationFilter.class);
+  @Override
+  public void configure(WebSecurity web) {
+    web.ignoring()
+        .antMatchers("/resources/**")
+        .antMatchers("/h2/**");
+  }
 
-    }
+  @Override
+  protected void configure(final HttpSecurity http) throws Exception {
+    http.cors().and().csrf().disable()
+        .authorizeRequests().antMatchers(HttpMethod.POST, "/user/login").permitAll()
+        .and().authorizeRequests().antMatchers("/h2-console/**").permitAll()
+        .anyRequest().authenticated();
 
-    @Bean
-    public TokenFilter tokenFilter() {
-        return new TokenFilter();
-    }
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+    // disable frame options
+    http.headers().frameOptions().disable();
+    http.addFilterBefore(tokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
-    @Bean
-    public AuthenticationProvider authenticationProvider() {
-        final DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(encoder());
-        return authProvider;
-    }
+  }
 
-    @Bean
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder(11);
-    }
+  @Bean
+  public TokenFilter tokenFilter() {
+    return new TokenFilter();
+  }
 
-    @Bean
-    public RoleHierarchy roleHierarchy() {
-        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-        String hierarchy = "ADMIN > VOLUNTARIO \n ADMIN > RESCATISTA \n ADMIN > DUENIO" ;
-        roleHierarchy.setHierarchy(hierarchy);
-        return roleHierarchy;
-    }
-    @Bean
-    public DefaultWebSecurityExpressionHandler webSecurityExpressionHandler() {
-        DefaultWebSecurityExpressionHandler expressionHandler = new DefaultWebSecurityExpressionHandler();
-        expressionHandler.setRoleHierarchy(roleHierarchy());
-        return expressionHandler;
-    }
+  @Bean
+  @Override
+  public AuthenticationManager authenticationManagerBean() throws Exception {
+    return super.authenticationManagerBean();
+  }
+
+  @Bean
+  public AuthenticationProvider authenticationProvider() {
+    final DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+    authProvider.setUserDetailsService(userDetailsService);
+    authProvider.setPasswordEncoder(encoder());
+    return authProvider;
+  }
+
+  @Bean
+  public PasswordEncoder encoder() {
+    return new BCryptPasswordEncoder(11);
+  }
+
+  @Bean
+  public RoleHierarchy roleHierarchy() {
+    RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+    String hierarchy = "ADMIN > VOLUNTARIO \n ADMIN > RESCATISTA \n ADMIN > DUENIO";
+    roleHierarchy.setHierarchy(hierarchy);
+    return roleHierarchy;
+  }
+
+  @Bean
+  public DefaultWebSecurityExpressionHandler webSecurityExpressionHandler() {
+    DefaultWebSecurityExpressionHandler expressionHandler = new DefaultWebSecurityExpressionHandler();
+    expressionHandler.setRoleHierarchy(roleHierarchy());
+    return expressionHandler;
+  }
 }
