@@ -63,7 +63,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(final HttpSecurity http) throws Exception {
     http.cors().and().csrf().disable()
-        .authorizeRequests().antMatchers(HttpMethod.POST, "/user/login").permitAll()
+        .authorizeRequests()
+            .antMatchers(HttpMethod.POST, "/user/login").permitAll()
+            .antMatchers(HttpMethod.POST, "/user/registrarse").permitAll()
         .and().authorizeRequests().antMatchers("/h2-console/**").permitAll()
         .anyRequest().authenticated();
 

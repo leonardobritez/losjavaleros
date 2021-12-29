@@ -51,7 +51,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         user.setNombre(usuarioDto.getFirstName());
         user.setApellido(usuarioDto.getLastName());
         user.setNombreUsuario(usuarioDto.getUsername());
-        user.setContrasenia(passwordEncoder.encode(usuarioDto.getPassword()));
+        user.setContrasenia(usuarioDto.getPassword());
         user.setEmail(usuarioDto.getEmail());
 
         user.setRoles(Arrays.asList(roleRepository.findByNombre(usuarioDto.getRol())));
