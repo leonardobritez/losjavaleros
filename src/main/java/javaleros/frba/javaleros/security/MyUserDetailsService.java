@@ -1,13 +1,11 @@
 package javaleros.frba.javaleros.security;
 
-import antlr.StringUtils;
 import javaleros.frba.javaleros.models.Privilegio;
 import javaleros.frba.javaleros.models.Rol;
 import javaleros.frba.javaleros.models.Usuario;
 import javaleros.frba.javaleros.repository.RolRepository;
 import javaleros.frba.javaleros.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.PostConstruct;
-import javax.transaction.Transactional;
 import java.util.*;
 
 import static javaleros.frba.javaleros.models.Constants.DUENIO;
@@ -38,14 +35,11 @@ public class MyUserDetailsService  implements UserDetailsService {
         roleRepository = applicationContext.getBean(RolRepository.class);
     }
 
-
-
-
     @Override
-    public UserDetails loadUserByUsername(String email)
+    public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
 
-        Usuario user = userRepository.findByNombreUsuario(email);
+        Usuario user = userRepository.findByNombreUsuario(username);
         if (user == null) {
             return new org.springframework.security.core.userdetails.User(
                     " ", " ", true, true, true, true,
@@ -53,7 +47,7 @@ public class MyUserDetailsService  implements UserDetailsService {
         }
 
         return new org.springframework.security.core.userdetails.User(
-                user.getEmail(), user.getContrasenia(), true, true, true,
+                user.getNombreUsuario(), user.getContrasenia(), true, true, true,
                 true, getAuthorities(user.getRoles()));
     }
 
