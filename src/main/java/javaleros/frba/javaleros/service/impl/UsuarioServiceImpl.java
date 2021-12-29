@@ -53,6 +53,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         user.setNombreUsuario(usuarioDto.getUsername());
         user.setContrasenia(usuarioDto.getPassword());
         user.setEmail(usuarioDto.getEmail());
+        user.setDni(usuarioDto.getDni());
 
         user.setRoles(Arrays.asList(roleRepository.findByNombre(usuarioDto.getRol())));
         return userRepository.save(user);
