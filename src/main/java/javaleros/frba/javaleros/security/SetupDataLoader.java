@@ -1,8 +1,10 @@
 package javaleros.frba.javaleros.security;
 
+import javaleros.frba.javaleros.models.Asociacion;
 import javaleros.frba.javaleros.models.Privilegio;
 import javaleros.frba.javaleros.models.Rol;
 import javaleros.frba.javaleros.models.Usuario;
+import javaleros.frba.javaleros.repository.AsociacionRepository;
 import javaleros.frba.javaleros.repository.PrivilegioRepository;
 import javaleros.frba.javaleros.repository.RolRepository;
 import javaleros.frba.javaleros.repository.UsuarioRepository;
@@ -10,7 +12,6 @@ import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -21,7 +22,10 @@ import java.util.Collection;
 import java.util.List;
 
 import static javaleros.frba.javaleros.models.Constants.*;
+import lombok.extern.java.Log;
 
+
+@Log
 @Component
 public class SetupDataLoader implements
         ApplicationListener<ContextRefreshedEvent> {
@@ -34,6 +38,8 @@ public class SetupDataLoader implements
 
     private PrivilegioRepository privilegeRepository;
 
+    private AsociacionRepository asociacionRepository;
+
 
     @Autowired
     private WebApplicationContext applicationContext;
@@ -43,6 +49,7 @@ public class SetupDataLoader implements
         userRepository = applicationContext.getBean(UsuarioRepository.class);
         rolRepository = applicationContext.getBean(RolRepository.class);
         privilegeRepository = applicationContext.getBean(PrivilegioRepository.class);
+        asociacionRepository = applicationContext.getBean(AsociacionRepository.class);
     }
 
     @SneakyThrows
@@ -75,6 +82,10 @@ public class SetupDataLoader implements
         user.setContrasenia("Test1234.");
         user.setRoles(Arrays.asList(adminRol));
         userRepository.save(user);
+
+        Asociacion asociacion1 = new Asociacion(1L, "Salvemos a los gatitos");
+        asociacionRepository.save(asociacion1);
+        log.info("Asociación 'Salvemos a los gatitos' creada.");
 
         alreadySetup = true;
     }
