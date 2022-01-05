@@ -43,14 +43,14 @@ public class VoluntarioController {
   public ResponseEntity<Voluntario> serVoluntario(@PathVariable final long asociacionId) throws NotFoundException {
 
     Usuario usuarioLogeado = getUsuarioLogeado();
-    //si el usuario loggeado ya es voluntario, lanzar excepcion.
+    
     if (voluntarioRepository.findByUsuario(usuarioLogeado) != null) {
       log.info("El usuario " + usuarioLogeado.getNombreUsuario() + " ya es voluntario.");
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
     }
     Voluntario nuevoVoluntario = voluntarioService.crearVoluntario(usuarioLogeado.getId(), asociacionId);
-    
+
     Collection<Rol> roles = usuarioLogeado.getRoles();
     Rol rolVoluntario = rolRepository.findByNombre(VOLUNTARIO);
     roles.add(rolVoluntario);
