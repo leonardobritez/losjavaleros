@@ -1,6 +1,7 @@
 package javaleros.frba.javaleros.controller;
 
 import javaleros.frba.javaleros.exceptions.EmailException;
+import javaleros.frba.javaleros.models.Rol;
 import javaleros.frba.javaleros.models.Usuario;
 import javaleros.frba.javaleros.models.dto.LoginRequest;
 import javaleros.frba.javaleros.models.dto.UsuarioDto;
@@ -17,6 +18,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+import java.util.Collection;
 import java.util.Objects;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -85,6 +88,13 @@ public class UserController {
 
     }
 
+    @GetMapping( "/rol")
+    @ResponseBody
+    public Collection<Rol> getRol(Principal principal) {
+        String nombreUsuario = principal.getName();
+        Usuario usuario = usuarioRepository.findByEmail(nombreUsuario);
+        return usuario.getRoles();
 
+    }
 
 }

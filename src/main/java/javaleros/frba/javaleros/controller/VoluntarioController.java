@@ -1,39 +1,66 @@
 package javaleros.frba.javaleros.controller;
 
+import java.util.Collection;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+import static javaleros.frba.javaleros.models.Constants.VOLUNTARIO;
+import javaleros.frba.javaleros.models.Rol;
+import javaleros.frba.javaleros.models.Usuario;
 import javaleros.frba.javaleros.models.Voluntario;
+import javaleros.frba.javaleros.repository.RolRepository;
+import javaleros.frba.javaleros.repository.UsuarioRepository;
+import javaleros.frba.javaleros.repository.VoluntarioRepository;
 import javaleros.frba.javaleros.service.VoluntarioService;
 import javassist.NotFoundException;
+import lombok.extern.java.Log;
 
+@Log
 @RestController
 public class VoluntarioController {
 
   private final VoluntarioService voluntarioService;
+  private final VoluntarioRepository voluntarioRepository;
+  private final UsuarioRepository usuarioRepository;
+  private final RolRepository rolRepository;
 
-  public VoluntarioController(final VoluntarioService voluntarioService) {
+
+  public VoluntarioController(final VoluntarioService voluntarioService, final VoluntarioRepository voluntarioRepository,
+                              final UsuarioRepository usuarioRepository, final RolRepository rolRepository) {
     this.voluntarioService = voluntarioService;
+    this.voluntarioRepository = voluntarioRepository;
+    this.usuarioRepository = usuarioRepository;
+    this.rolRepository = rolRepository;
   }
 
   //PUNTO 2.3
-  @PostMapping("/serVoluntario/{usuarioId}/asociacion/{asociacionId}")
-  public ResponseEntity<Voluntario> serVoluntario(@PathVariable final int usuarioId,
-                                                  @PathVariable final long asociacionId) throws NotFoundException {
+  @PostMapping("/serVoluntario/asociacion/{asociacionId}")
+  public ResponseEntity<Voluntario> serVoluntario(@PathVariable final long asociacionId) throws NotFoundException {
 
-    //No puede pasarse el usario ID por parametro, no sería nada seguro.
-    //TODO Obtener el ID del usuario logeado.
-
+    Usuario usuarioLogeado = getUsuarioLogeado();
     //si el usuario loggeado ya es voluntario, lanzar excepcion.
+    if (voluntarioRepository.findByUsuario(usuarioLogeado) != null) {
+      log.info("El usuario " + usuarioLogeado.getNombreUsuario() + " ya es voluntario.");
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
-    Voluntario voluntario = voluntarioService.crearVoluntario(usuarioId, asociacionId);
+    }
+    Voluntario nuevoVoluntario = voluntarioService.crearVoluntario(usuarioLogeado.getId(), asociacionId);
+    
+    Collection<Rol> roles = usuarioLogeado.getRoles();
+    Rol rolVoluntario = rolRepository.findByNombre(VOLUNTARIO);
+    roles.add(rolVoluntario);
+    usuarioLogeado.setRoles(roles);
+    usuarioRepository.save(usuarioLogeado);
 
-    return new ResponseEntity<>(voluntario, HttpStatus.OK);
-    //TODO en version productiva, no devolver al voluntario.
+    return new ResponseEntity<>(nuevoVoluntario, HttpStatus.OK);
 
   }
+
   //PUNTO 2.3
   @PostMapping("/aprobarPublicacion/{idPublicacion}")
   public ResponseEntity<HttpStatus> aprobarPublicacion(@PathVariable final int idPublicacion) {
@@ -45,6 +72,7 @@ public class VoluntarioController {
     return new ResponseEntity<>(HttpStatus.OK);
 
   }
+
   //PUNTO 2.3
   @PostMapping("/rechazarPublicacion/{idPublicacion}")
   public ResponseEntity<HttpStatus> rechazarPublicacion(@PathVariable final int idPublicacion) {
@@ -55,6 +83,12 @@ public class VoluntarioController {
 
     return new ResponseEntity<>(HttpStatus.OK);
 
+  }
+
+  private Usuario getUsuarioLogeado() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    String currentUserName = authentication.getName();
+    return usuarioRepository.findByNombreUsuario(currentUserName);
   }
 
 }
