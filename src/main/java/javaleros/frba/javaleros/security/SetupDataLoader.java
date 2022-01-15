@@ -1,11 +1,14 @@
 package javaleros.frba.javaleros.security;
 
 import javaleros.frba.javaleros.models.Asociacion;
+import javaleros.frba.javaleros.models.EstadoPublicacion;
 import javaleros.frba.javaleros.models.Privilegio;
+import javaleros.frba.javaleros.models.Publicacion;
 import javaleros.frba.javaleros.models.Rol;
 import javaleros.frba.javaleros.models.Usuario;
 import javaleros.frba.javaleros.repository.AsociacionRepository;
 import javaleros.frba.javaleros.repository.PrivilegioRepository;
+import javaleros.frba.javaleros.repository.PublicacionRepository;
 import javaleros.frba.javaleros.repository.RolRepository;
 import javaleros.frba.javaleros.repository.UsuarioRepository;
 import lombok.SneakyThrows;
@@ -40,6 +43,7 @@ public class SetupDataLoader implements
 
     private AsociacionRepository asociacionRepository;
 
+    private PublicacionRepository publicacionRepository;
 
     @Autowired
     private WebApplicationContext applicationContext;
@@ -50,6 +54,7 @@ public class SetupDataLoader implements
         rolRepository = applicationContext.getBean(RolRepository.class);
         privilegeRepository = applicationContext.getBean(PrivilegioRepository.class);
         asociacionRepository = applicationContext.getBean(AsociacionRepository.class);
+        publicacionRepository = applicationContext.getBean(PublicacionRepository.class);
     }
 
     @SneakyThrows
@@ -86,6 +91,11 @@ public class SetupDataLoader implements
         Asociacion asociacion1 = new Asociacion(1L, "Salvemos a los gatitos");
         asociacionRepository.save(asociacion1);
         log.info("Asociación 'Salvemos a los gatitos' creada.");
+
+        Publicacion publicacionPendiente = new Publicacion(user, null, "Descripcion", 123D,
+            456D, EstadoPublicacion.PENDIENTE);
+        publicacionRepository.save(publicacionPendiente);
+        log.info("Publicacion pendiente creada con ID " + publicacionPendiente.getId().toString());
 
         alreadySetup = true;
     }

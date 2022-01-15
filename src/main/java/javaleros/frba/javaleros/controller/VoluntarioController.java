@@ -6,9 +6,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+import javaleros.frba.javaleros.exceptions.NoEsVoluntarioException;
 import static javaleros.frba.javaleros.models.Constants.VOLUNTARIO;
 import javaleros.frba.javaleros.models.Rol;
 import javaleros.frba.javaleros.models.Usuario;
@@ -43,8 +45,8 @@ public class VoluntarioController {
   public ResponseEntity<Voluntario> serVoluntario(@PathVariable final long asociacionId) throws NotFoundException {
 
     Usuario usuarioLogeado = getUsuarioLogeado();
-    
-    if (voluntarioRepository.findByUsuario(usuarioLogeado) != null) {
+
+    if (esVoluntario()) {
       log.info("El usuario " + usuarioLogeado.getNombreUsuario() + " ya es voluntario.");
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
@@ -65,7 +67,9 @@ public class VoluntarioController {
   @PostMapping("/aprobarPublicacion/{idPublicacion}")
   public ResponseEntity<HttpStatus> aprobarPublicacion(@PathVariable final int idPublicacion) {
 
-    //todo probar que el usuario loggeado es un voluntario.
+    if (!esVoluntario()) {
+      throw new NoEsVoluntarioException();
+    }
 
     voluntarioService.aprobarPublicacion(idPublicacion);
 
@@ -77,7 +81,9 @@ public class VoluntarioController {
   @PostMapping("/rechazarPublicacion/{idPublicacion}")
   public ResponseEntity<HttpStatus> rechazarPublicacion(@PathVariable final int idPublicacion) {
 
-    //todo probar que el usuario loggeado es un voluntario.
+    if (!esVoluntario()) {
+      throw new NoEsVoluntarioException();
+    }
 
     voluntarioService.rechazarPublicacion(idPublicacion);
 
@@ -89,6 +95,23 @@ public class VoluntarioController {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     String currentUserName = authentication.getName();
     return usuarioRepository.findByNombreUsuario(currentUserName);
+  }
+
+  private boolean esVoluntario() {
+    Usuario usuarioLogeado = getUsuarioLogeado();
+    return esVoluntario(usuarioLogeado);
+
+  }
+
+  private boolean esVoluntario(Usuario usuario) {
+    return voluntarioRepository.findByUsuario(usuario) != null;
+
+  }
+
+  @ExceptionHandler({NoEsVoluntarioException.class})
+  public ResponseEntity<String> handleNoEsVoluntarioExceptionException(RuntimeException exception) {
+    return ResponseEntity.badRequest().body(exception.getMessage());
+
   }
 
 }
