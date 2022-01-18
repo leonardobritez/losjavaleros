@@ -29,7 +29,6 @@ import java.util.List;
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
-
   private final WebApplicationContext applicationContext;
 
   private MyUserDetailsService userDetailsService;
@@ -38,12 +37,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     this.applicationContext = applicationContext;
   }
 
-
   @PostConstruct
   public void completeSetup() {
     userDetailsService = applicationContext.getBean(MyUserDetailsService.class);
   }
-
 
   @Override
   protected void configure(final AuthenticationManagerBuilder auth) throws Exception {

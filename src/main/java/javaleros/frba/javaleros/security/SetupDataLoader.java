@@ -90,7 +90,7 @@ public class SetupDataLoader implements
 
         Asociacion asociacion1 = new Asociacion(1L, "Salvemos a los gatitos");
         asociacionRepository.save(asociacion1);
-        log.info("Asociación 'Salvemos a los gatitos' creada.");
+        log.info("Asociación 'Salvemos a los gatitos' creada con ID " + asociacion1.getId().toString());
 
         Publicacion publicacionPendiente = new Publicacion(user, null, "Descripcion", 123D,
             456D, EstadoPublicacion.PENDIENTE);
