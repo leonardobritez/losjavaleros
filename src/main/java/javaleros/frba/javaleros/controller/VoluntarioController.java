@@ -91,6 +91,16 @@ public class VoluntarioController {
 
   }
 
+
+
+  // todo Listar publicaciones pendientes, solo pueden acceder voluntarios
+
+  // todo Listar publicaciones aprobadas
+
+  // todo Listar Asociaciones disponibles
+
+
+
   private Usuario getUsuarioLogeado() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     String currentUserName = authentication.getName();

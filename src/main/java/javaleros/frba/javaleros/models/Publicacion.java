@@ -29,10 +29,14 @@ public class Publicacion {
   @OneToMany
   private List<Foto> fotos;
   private String descripcion;
+  //todo cambiar coordenadas por calle, altura, partido y provincia
   private Double coordenadasX;
   private Double coordenadasY;
 
   private EstadoPublicacion estadoPublicacion;
+
+  //todo agregar Asociacion
+  //todo "La asociación asignada a la publicación debe ser la más cercana a la ubicación donde se encontró la mascota."
 
   //ORM requiere este constructor vacío.
   public Publicacion() {
