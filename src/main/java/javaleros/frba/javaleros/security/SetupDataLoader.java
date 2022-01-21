@@ -97,6 +97,16 @@ public class SetupDataLoader implements
         publicacionRepository.save(publicacionPendiente);
         log.info("Publicacion pendiente creada con ID " + publicacionPendiente.getId().toString());
 
+        Publicacion publicacionRechazada = new Publicacion(user, null, "Descripcion", 123D,
+            456D, EstadoPublicacion.RECHAZADA);
+        publicacionRepository.save(publicacionRechazada);
+        log.info("Publicacion rechazada creada con ID " + publicacionRechazada.getId().toString());
+
+        Publicacion publicacionAprobada = new Publicacion(user, null, "Descripcion", 123D,
+            456D, EstadoPublicacion.APROBADA);
+        publicacionRepository.save(publicacionAprobada);
+        log.info("Publicacion aprobada creada con ID " + publicacionAprobada.getId().toString());
+
         alreadySetup = true;
     }
 

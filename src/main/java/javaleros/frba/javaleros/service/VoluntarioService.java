@@ -1,13 +1,16 @@
 package javaleros.frba.javaleros.service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import javaleros.frba.javaleros.models.Asociacion;
+import javaleros.frba.javaleros.models.EstadoPublicacion;
 import javaleros.frba.javaleros.models.Publicacion;
 import javaleros.frba.javaleros.models.Rol;
 import javaleros.frba.javaleros.models.Usuario;
@@ -96,5 +99,13 @@ public class VoluntarioService {
 
     publicacion.rechazar();
     publicacionRepository.save(publicacion);
+  }
+
+  public List<Publicacion> listarPublicacionesPendientes() {
+    Publicacion publicacionPendiente = new Publicacion(null, null, null, null, null,
+        null, null, null, null, EstadoPublicacion.PENDIENTE);
+    Example<Publicacion> example = Example.of(publicacionPendiente);
+    return publicacionRepository.findAll(example);
+
   }
 }

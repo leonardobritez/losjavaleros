@@ -1,17 +1,20 @@
 package javaleros.frba.javaleros.controller;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import javaleros.frba.javaleros.exceptions.NoEsVoluntarioException;
 import static javaleros.frba.javaleros.models.Constants.VOLUNTARIO;
+import javaleros.frba.javaleros.models.Publicacion;
 import javaleros.frba.javaleros.models.Rol;
 import javaleros.frba.javaleros.models.Usuario;
 import javaleros.frba.javaleros.models.Voluntario;
@@ -46,7 +49,7 @@ public class VoluntarioController {
 
     Usuario usuarioLogeado = getUsuarioLogeado();
 
-    if (esVoluntario()) {
+    if (usuarioResgistradoEsVoluntario()) {
       log.info("El usuario " + usuarioLogeado.getNombreUsuario() + " ya es voluntario.");
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
@@ -67,7 +70,7 @@ public class VoluntarioController {
   @PostMapping("/aprobarPublicacion/{idPublicacion}")
   public ResponseEntity<HttpStatus> aprobarPublicacion(@PathVariable final int idPublicacion) {
 
-    if (!esVoluntario()) {
+    if (!usuarioResgistradoEsVoluntario()) {
       throw new NoEsVoluntarioException();
     }
 
@@ -81,7 +84,7 @@ public class VoluntarioController {
   @PostMapping("/rechazarPublicacion/{idPublicacion}")
   public ResponseEntity<HttpStatus> rechazarPublicacion(@PathVariable final int idPublicacion) {
 
-    if (!esVoluntario()) {
+    if (!usuarioResgistradoEsVoluntario()) {
       throw new NoEsVoluntarioException();
     }
 
@@ -91,9 +94,20 @@ public class VoluntarioController {
 
   }
 
-
-
   // todo Listar publicaciones pendientes, solo pueden acceder voluntarios
+  @GetMapping("/publicaciones/pendientes")
+  public ResponseEntity<List<Publicacion>> listarPublicacionesPendientes() {
+
+    if (!usuarioResgistradoEsVoluntario()) {
+      throw new NoEsVoluntarioException();
+    }
+
+    List<Publicacion> publicaciones = voluntarioService.listarPublicacionesPendientes();
+
+    return ResponseEntity.ok().body(publicaciones);
+
+  }
+
 
   // todo Listar publicaciones aprobadas
 
@@ -107,13 +121,13 @@ public class VoluntarioController {
     return usuarioRepository.findByNombreUsuario(currentUserName);
   }
 
-  private boolean esVoluntario() {
+  private boolean usuarioResgistradoEsVoluntario() {
     Usuario usuarioLogeado = getUsuarioLogeado();
-    return esVoluntario(usuarioLogeado);
+    return usuarioResgistradoEsVoluntario(usuarioLogeado);
 
   }
 
-  private boolean esVoluntario(Usuario usuario) {
+  private boolean usuarioResgistradoEsVoluntario(Usuario usuario) {
     return voluntarioRepository.findByUsuario(usuario) != null;
 
   }
