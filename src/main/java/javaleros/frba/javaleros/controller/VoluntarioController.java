@@ -94,7 +94,7 @@ public class VoluntarioController {
 
   }
 
-  // todo Listar publicaciones pendientes, solo pueden acceder voluntarios
+  // Listar publicaciones pendientes, solo pueden acceder voluntarios
   @GetMapping("/publicaciones/pendientes")
   public ResponseEntity<List<Publicacion>> listarPublicacionesPendientes() {
 
@@ -108,10 +108,24 @@ public class VoluntarioController {
 
   }
 
-
   // todo Listar publicaciones aprobadas
+  @GetMapping("/publicaciones/aprobadas")
+  public ResponseEntity<List<Publicacion>> listarPublicacionesAprobadas() {
+
+    if (!usuarioResgistradoEsVoluntario()) {
+      throw new NoEsVoluntarioException();
+    }
+
+    List<Publicacion> publicaciones = voluntarioService.listarPublicacionesAprobadas();
+
+    return ResponseEntity.ok().body(publicaciones);
+
+  }
+
+
 
   // todo Listar Asociaciones disponibles
+
 
 
 

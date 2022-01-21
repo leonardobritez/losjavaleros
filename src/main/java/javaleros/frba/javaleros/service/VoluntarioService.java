@@ -108,4 +108,12 @@ public class VoluntarioService {
     return publicacionRepository.findAll(example);
 
   }
+
+  public List<Publicacion> listarPublicacionesAprobadas() {
+    Publicacion publicacionAprobada = new Publicacion(null, null, null, null, null,
+        null, null, null, null, EstadoPublicacion.APROBADA);
+    Example<Publicacion> example = Example.of(publicacionAprobada);
+    return publicacionRepository.findAll(example);
+
+  }
 }
