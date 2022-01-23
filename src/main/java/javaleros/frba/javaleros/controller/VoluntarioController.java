@@ -108,13 +108,9 @@ public class VoluntarioController {
 
   }
 
-  // todo Listar publicaciones aprobadas
+  // Listar publicaciones aprobadas
   @GetMapping("/publicaciones/aprobadas")
   public ResponseEntity<List<Publicacion>> listarPublicacionesAprobadas() {
-
-    if (!usuarioResgistradoEsVoluntario()) {
-      throw new NoEsVoluntarioException();
-    }
 
     List<Publicacion> publicaciones = voluntarioService.listarPublicacionesAprobadas();
 
