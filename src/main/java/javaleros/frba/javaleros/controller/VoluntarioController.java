@@ -118,10 +118,8 @@ public class VoluntarioController {
     return ResponseEntity.ok().body(publicaciones);
 
   }
-
-
-
-  // todo Listar Asociaciones disponibles
+  
+  // Listar Asociaciones disponibles
   @GetMapping("/asociaciones")
   public ResponseEntity<List<Asociacion>> listarAsociaciones() {
 
@@ -130,10 +128,6 @@ public class VoluntarioController {
     return ResponseEntity.ok().body(asociaciones);
 
   }
-
-
-
-
 
   private Usuario getUsuarioLogeado() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
