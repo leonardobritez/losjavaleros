@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import javaleros.frba.javaleros.exceptions.NoEsVoluntarioException;
+import javaleros.frba.javaleros.models.Asociacion;
 import static javaleros.frba.javaleros.models.Constants.VOLUNTARIO;
 import javaleros.frba.javaleros.models.Publicacion;
 import javaleros.frba.javaleros.models.Rol;
@@ -121,6 +122,15 @@ public class VoluntarioController {
 
 
   // todo Listar Asociaciones disponibles
+  @GetMapping("/asociaciones")
+  public ResponseEntity<List<Asociacion>> listarAsociaciones() {
+
+    List<Asociacion> asociaciones = voluntarioService.listarAsociaciones();
+
+    return ResponseEntity.ok().body(asociaciones);
+
+  }
+
 
 
 

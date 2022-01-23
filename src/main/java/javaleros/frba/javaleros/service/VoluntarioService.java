@@ -116,4 +116,9 @@ public class VoluntarioService {
     return publicacionRepository.findAll(example);
 
   }
+
+  public List<Asociacion> listarAsociaciones() {
+    return asociacionRepository.findAll();
+
+  }
 }
