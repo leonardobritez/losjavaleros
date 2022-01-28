@@ -102,16 +102,14 @@ public class VoluntarioService {
   }
 
   public List<Publicacion> listarPublicacionesPendientes() {
-    Publicacion publicacionPendiente = new Publicacion(null, null, null, null, null,
-        null, null, null, null, EstadoPublicacion.PENDIENTE);
+    Publicacion publicacionPendiente = new Publicacion(EstadoPublicacion.PENDIENTE);
     Example<Publicacion> example = Example.of(publicacionPendiente);
     return publicacionRepository.findAll(example);
 
   }
 
   public List<Publicacion> listarPublicacionesAprobadas() {
-    Publicacion publicacionAprobada = new Publicacion(null, null, null, null, null,
-        null, null, null, null, EstadoPublicacion.APROBADA);
+    Publicacion publicacionAprobada = new Publicacion(EstadoPublicacion.APROBADA);
     Example<Publicacion> example = Example.of(publicacionAprobada);
     return publicacionRepository.findAll(example);
 

@@ -92,18 +92,18 @@ public class SetupDataLoader implements
         asociacionRepository.save(asociacion1);
         log.info("Asociación 'Salvemos a los gatitos' creada con ID " + asociacion1.getId().toString());
 
-        Publicacion publicacionPendiente = new Publicacion(user, null, "Descripcion", 123D,
-            456D, EstadoPublicacion.PENDIENTE);
+        Publicacion publicacionPendiente = new Publicacion(user, null, "Descripcion",
+            EstadoPublicacion.PENDIENTE);
         publicacionRepository.save(publicacionPendiente);
         log.info("Publicacion pendiente creada con ID " + publicacionPendiente.getId().toString());
 
-        Publicacion publicacionRechazada = new Publicacion(user, null, "Descripcion", 123D,
-            456D, EstadoPublicacion.RECHAZADA);
+        Publicacion publicacionRechazada = new Publicacion(user, null, "Descripcion",
+            EstadoPublicacion.RECHAZADA);
         publicacionRepository.save(publicacionRechazada);
         log.info("Publicacion rechazada creada con ID " + publicacionRechazada.getId().toString());
 
-        Publicacion publicacionAprobada = new Publicacion(user, null, "Descripcion", 123D,
-            456D, EstadoPublicacion.APROBADA);
+        Publicacion publicacionAprobada = new Publicacion(user, null, "Descripcion",
+            EstadoPublicacion.APROBADA);
         publicacionRepository.save(publicacionAprobada);
         log.info("Publicacion aprobada creada con ID " + publicacionAprobada.getId().toString());
 

@@ -118,7 +118,7 @@ public class VoluntarioController {
     return ResponseEntity.ok().body(publicaciones);
 
   }
-  
+
   // Listar Asociaciones disponibles
   @GetMapping("/asociaciones")
   public ResponseEntity<List<Asociacion>> listarAsociaciones() {

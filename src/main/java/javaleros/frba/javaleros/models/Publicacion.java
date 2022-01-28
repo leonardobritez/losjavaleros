@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -29,28 +30,32 @@ public class Publicacion {
   @OneToMany
   private List<Foto> fotos;
   private String descripcion;
-  //todo cambiar coordenadas por calle, altura, partido y provincia
-  private Double coordenadasX;
-  private Double coordenadasY;
-
+  private String calle;
+  private String altura;
+  private String partido;
+  private String provincia;
   private EstadoPublicacion estadoPublicacion;
+  @ManyToOne
+  private Asociacion asociacion;
 
-  //todo agregar Asociacion
   //todo "La asociación asignada a la publicación debe ser la más cercana a la ubicación donde se encontró la mascota."
+  //en un principio, lo mas simple seria encontrar una Asociación en el mismo partido y si nó en la misma provincia.
 
   //ORM requiere este constructor vacío.
   public Publicacion() {
   }
 
-  public Publicacion(final Usuario usuario, final List<Foto> fotos, final String descripcion, final Double coordenadasX,
-                     final Double coordenadasY, final EstadoPublicacion estadoPublicacion) {
+  public Publicacion(final EstadoPublicacion estadoPublicacion){
+    this.estadoPublicacion = estadoPublicacion;
+  }
+
+  public Publicacion(final Usuario usuario, final List<Foto> fotos, final String descripcion,
+                     final EstadoPublicacion estadoPublicacion) {
     this.nombre = usuario.getNombre();
     this.apellido = usuario.getApellido();
     this.dni = usuario.getDni();
     this.fotos = fotos;
     this.descripcion = descripcion;
-    this.coordenadasX = coordenadasX;
-    this.coordenadasY = coordenadasY;
     this.estadoPublicacion = estadoPublicacion;
   }
 
