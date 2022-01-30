@@ -1,5 +1,6 @@
 package javaleros.frba.javaleros.controller;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javaleros.frba.javaleros.exceptions.NoEsVoluntarioException;
 import javaleros.frba.javaleros.models.Asociacion;
 import static javaleros.frba.javaleros.models.Constants.VOLUNTARIO;
+import javaleros.frba.javaleros.models.HogarDeTransito;
 import javaleros.frba.javaleros.models.Publicacion;
 import javaleros.frba.javaleros.models.Rol;
 import javaleros.frba.javaleros.models.Usuario;
@@ -126,6 +128,26 @@ public class VoluntarioController {
     List<Asociacion> asociaciones = voluntarioService.listarAsociaciones();
 
     return ResponseEntity.ok().body(asociaciones);
+
+  }
+
+  //2.4- Se debe permitir que el sistema ofrezca posibles hogares de tránsito a los rescatistas de mascotas.
+  //Existe una API REST que ofrece un listado de hogares de tránsito.
+  @GetMapping("/hogaresDeTransito")
+  public ResponseEntity<List<HogarDeTransito>> listarHogaresDeTransito() {
+
+    //TODO "El rescatista podrá elegir el radio de cercanía de los hogares de tránsito." Esto hay que ver como
+    // solucionarlo.
+
+    List<HogarDeTransito> lista = new ArrayList<>();
+    HogarDeTransito hogar1 = new HogarDeTransito("Casa de gatitos", "Pasaje Miau-miau 4290",
+        false, true, false, 14);
+    HogarDeTransito hogar2 = new HogarDeTransito("Refugio animalitos de dios", "Av. Siempreviva 5091",
+        true, true, true, 17);
+    lista.add(hogar1);
+    lista.add(hogar2);
+
+    return ResponseEntity.ok().body(lista);
 
   }
 
