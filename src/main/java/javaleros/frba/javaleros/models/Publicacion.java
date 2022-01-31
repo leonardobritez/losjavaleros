@@ -30,6 +30,9 @@ public class Publicacion {
   @OneToMany
   private List<Foto> fotos;
   private String descripcion;
+  private String especieDeLaMascota;
+  private String colorDeLaMascota;
+  private String sexoDeLaMascota;
   private String calle;
   private String altura;
   private String partido;

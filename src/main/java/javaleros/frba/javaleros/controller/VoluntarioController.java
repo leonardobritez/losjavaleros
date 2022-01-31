@@ -112,6 +112,8 @@ public class VoluntarioController {
   }
 
   // Listar publicaciones aprobadas
+  //2.5- Se debe permitir que una persona busque a su mascota perdida en la plataforma y que pueda
+  //contactarse con el rescatista en caso de encontrarla.
   @GetMapping("/publicaciones/aprobadas")
   public ResponseEntity<List<Publicacion>> listarPublicacionesAprobadas() {
 
