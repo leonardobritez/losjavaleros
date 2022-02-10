@@ -1,5 +1,5 @@
 package javaleros.frba.javaleros.models;
 
-public enum Sexo {
+public enum SexoEnum {
   MACHO, HEMBRA;
 }

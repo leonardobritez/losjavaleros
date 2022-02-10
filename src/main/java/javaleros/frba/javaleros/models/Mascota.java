@@ -16,11 +16,16 @@ import java.util.List;
 @Setter
 @Entity
 public class Mascota implements Serializable{
-  @Id
+  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+@Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
-  @ManyToOne
-  private Usuario duenio;
+	/*
+	 * @ManyToOne private Usuario duenio;
+	 */
   @OneToMany
   private List<CaracteristicaCompleta> caracteristicas;
   private String chapita;
@@ -28,7 +33,7 @@ public class Mascota implements Serializable{
   private String nombre;
   private String apodo;
   private Integer edad;
-  private Sexo sexo;
+  private SexoEnum sexo;
   private String descripcion;
   @OneToMany
   private List<Foto> fotos;
@@ -38,8 +43,8 @@ public class Mascota implements Serializable{
   public Mascota() {
   }
 
-public Mascota(final Usuario duenio, final List<CaracteristicaCompleta> caracteristicas, final String chapita, final String tipo, final String nombre, final String apodo, final Integer edad, final Sexo sexo, final String descripcion, final List<Foto> fotos, final MascotaEstadoEnum estado) {
-    this.duenio = duenio;
+public Mascota(final List<CaracteristicaCompleta> caracteristicas, final String chapita, final String tipo, final String nombre, final String apodo, final Integer edad, final SexoEnum sexo, final String descripcion, final List<Foto> fotos, final MascotaEstadoEnum estado) {
+	/* this.duenio = duenio; */
     this.caracteristicas = caracteristicas;
     this.chapita = chapita;
     this.tipo = tipo;
@@ -61,13 +66,6 @@ public void setId(int id) {
 	this.id = id;
 }
 
-public Usuario getDuenio() {
-	return duenio;
-}
-
-public void setDuenio(Usuario duenio) {
-	this.duenio = duenio;
-}
 
 public List<CaracteristicaCompleta> getCaracteristicas() {
 	return caracteristicas;
@@ -117,11 +115,11 @@ public void setEdad(Integer edad) {
 	this.edad = edad;
 }
 
-public Sexo getSexo() {
+public SexoEnum getSexo() {
 	return sexo;
 }
 
-public void setSexo(Sexo sexo) {
+public void setSexo(SexoEnum sexo) {
 	this.sexo = sexo;
 }
 
