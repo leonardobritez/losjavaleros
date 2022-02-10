@@ -19,6 +19,9 @@ public class TokenRepository {
         return uuid;
     }
 
+    public void delete(String token){
+        redisTemplate.opsForValue().getAndDelete(token);
+    }
     public String findBytoken(String id) {
         return redisTemplate.opsForValue()
                 .get(id);

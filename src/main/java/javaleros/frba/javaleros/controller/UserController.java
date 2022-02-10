@@ -54,6 +54,17 @@ public class UserController {
 
     }
 
+
+    @PostMapping("/logout")
+    @ResponseBody
+    public ResponseEntity logout(@RequestHeader (name="Authorization") String token)  {
+
+
+        tokenRepository.delete(token);
+
+        return  new ResponseEntity(HttpStatus.NO_CONTENT);
+
+    }
     @GetMapping(value = "/token/{token}",produces = APPLICATION_JSON_VALUE)
     @ResponseBody()
     public ResponseEntity login( @PathVariable String token)  {

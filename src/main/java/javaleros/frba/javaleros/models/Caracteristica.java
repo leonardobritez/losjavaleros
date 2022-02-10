@@ -1,6 +1,7 @@
 package javaleros.frba.javaleros.models;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +17,7 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 public class Caracteristica {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

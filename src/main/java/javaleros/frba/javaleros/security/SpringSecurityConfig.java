@@ -1,5 +1,7 @@
 package javaleros.frba.javaleros.security;
 
+import static javaleros.frba.javaleros.models.Constants.ADMIN;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -63,6 +65,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         .authorizeRequests()
             .antMatchers(HttpMethod.POST, "/user/login").permitAll()
             .antMatchers(HttpMethod.POST, "/user/registrarse").permitAll()
+            .antMatchers("/caracteristica/**").hasAuthority(ADMIN)
         .and().authorizeRequests().antMatchers("/h2-console/**").permitAll()
         .anyRequest().authenticated();
 
