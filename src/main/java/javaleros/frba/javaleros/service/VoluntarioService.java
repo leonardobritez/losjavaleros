@@ -49,6 +49,7 @@ public class VoluntarioService {
   }
 
   @Transactional
+  //clean code, no deberia devolver nada siendo transaccional
   public Voluntario crearVoluntario(final int usuarioId, final long asociacionId) throws NotFoundException {
 
     //Si el usuario ya es voluntario no hacer nada
