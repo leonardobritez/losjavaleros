@@ -9,6 +9,7 @@ import org.passay.RuleResult;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -20,19 +21,23 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(unique = true)
     private Long dni;
     private String nombre;
     private String apellido;
     private String email;
     private String contrasenia;
+    @Column(unique = true)
     private String nombreUsuario;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Collection<Rol> roles;
-   // @OneToMany(cascade = CascadeType.ALL)
-   // private List<Mascota> mascotas;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Mascota> mascotas;
 
 
-    public Usuario(final Integer id, final Long dni, final String nombreUsuario, final String nombre, final String apellido, final String email, final String contrasenia, final Collection<Rol> roles) {
+    public Usuario(final Integer id, final Long dni, final String nombreUsuario, final String nombre, final String apellido, final String email, final String contrasenia,
+                   final Collection<Rol> roles,
+                   final List<Mascota> mascotas) {
         this.id = id;
         this.dni = dni;
         this.nombre = nombre;
@@ -41,7 +46,7 @@ public class Usuario {
         this.contrasenia = contrasenia;
         this.roles = roles;
         this.nombreUsuario = nombreUsuario;
-       // this.mascotas = mascotas;
+        this.mascotas = mascotas;
     }
 
     //no borrar este constructor!

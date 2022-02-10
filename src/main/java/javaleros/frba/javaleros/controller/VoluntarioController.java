@@ -153,7 +153,7 @@ public class VoluntarioController {
 
   }
 
-  private Usuario getUsuarioLogeado() {
+  public Usuario getUsuarioLogeado() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     String currentUserName = authentication.getName();
     return usuarioRepository.findByNombreUsuario(currentUserName);
