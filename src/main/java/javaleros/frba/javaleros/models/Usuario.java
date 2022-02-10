@@ -20,11 +20,13 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(unique = true)
     private Long dni;
     private String nombre;
     private String apellido;
     private String email;
     private String contrasenia;
+    @Column(unique = true)
     private String nombreUsuario;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Collection<Rol> roles;
