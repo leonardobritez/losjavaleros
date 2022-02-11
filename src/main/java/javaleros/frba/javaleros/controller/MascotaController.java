@@ -4,6 +4,7 @@ import javaleros.frba.javaleros.helpers.QrGenerator;
 import javaleros.frba.javaleros.models.Mascota;
 import javaleros.frba.javaleros.models.MascotaEstadoEnum;
 import javaleros.frba.javaleros.models.Usuario;
+import javaleros.frba.javaleros.models.dto.MascotaDto;
 import javaleros.frba.javaleros.repository.UsuarioRepository;
 import javaleros.frba.javaleros.service.EnviadorDeEmails;
 import javaleros.frba.javaleros.service.MascotaService;
@@ -21,11 +22,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/mascotas")
+@RequestMapping("/mascota")
 public class MascotaController {
 
 
-    public static final String URL_CHAPITA = "localhost:8081/mascotas/";
+    public static final String URL_CHAPITA = "localhost:8081/mascota/";
     @Autowired
     private MascotaService mascotaService;
 
@@ -35,10 +36,22 @@ public class MascotaController {
     private UsuarioRepository usuarioRepository;
 
     @PostMapping("")
-    public ResponseEntity<HttpStatus> registrarMascota() {
-
-
-        return  new ResponseEntity("OK",HttpStatus.OK);
+    public ResponseEntity<HttpStatus> registrarMascota(MascotaDto mascotaDto) {
+        Usuario usuario = getUsuarioLogeado();
+        Mascota mascota = Mascota.builder()
+                .apodo(mascotaDto.getApodo())
+                .caracteristicas(mascotaDto.getCaracteristicas())
+                .duenio(usuario)
+                //.fotos(mascotaDto.getFotos())
+                .sexo(mascotaDto.getSexo())
+                .estado(MascotaEstadoEnum.ADOPTADO)
+                .tipo(mascotaDto.getTipo())
+                .descripcion(mascotaDto.getDescripcion())
+                .edad(mascotaDto.getEdad())
+                .build();
+        usuario.getMascotas().add(mascota);
+        mascotaService.guardarMascota(mascota);
+        return  new ResponseEntity("mascota registrada",HttpStatus.CREATED);
     }
     @PostMapping(value= "/{id}/generarChapita", produces = MediaType.IMAGE_PNG_VALUE)
     public ResponseEntity generarChapita(@PathVariable Long id) {
