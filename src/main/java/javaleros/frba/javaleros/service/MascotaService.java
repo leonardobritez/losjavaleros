@@ -11,7 +11,7 @@ public class MascotaService {
     @Autowired
     private MascotaRepository  mascotaRepository;
 
-    public Mascota get(Long id) {
+    public Mascota get(Integer id) {
 
        return mascotaRepository.getById(id);
     }
@@ -22,7 +22,7 @@ public class MascotaService {
     }
 
 
-    public boolean existeMascota(Long id) {
+    public boolean existeMascota(Integer id) {
 
         return mascotaRepository.existsById(id);
     }

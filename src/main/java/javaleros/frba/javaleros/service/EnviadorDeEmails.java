@@ -22,8 +22,14 @@ public class EnviadorDeEmails {
     log.info("Enviando mail...");
 
     try {
-      enviarMailConAdjunto(para, asunto, cuerpo);
-    } catch(MessagingException | IOException e) {
+      new Thread(() -> {
+        try {
+          enviarMailConAdjunto(para, asunto, cuerpo);
+        } catch (MessagingException | IOException e) {
+          e.printStackTrace();
+        }
+      }).start();
+    } catch(Exception e) {
       e.printStackTrace();
     }
 
