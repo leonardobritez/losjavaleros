@@ -51,7 +51,7 @@ public class MascotaController {
                 .build();
         usuario.getMascotas().add(mascota);
         mascotaService.guardarMascota(mascota);
-        return  new ResponseEntity("mascota registrada",HttpStatus.CREATED);
+        return  new ResponseEntity(mascota,HttpStatus.CREATED);
     }
     @PostMapping(value= "/{id}/generarChapita", produces = MediaType.IMAGE_PNG_VALUE)
     public ResponseEntity generarChapita(@PathVariable Long id) {
@@ -71,7 +71,7 @@ public class MascotaController {
         }
     }
 
-    @GetMapping(value="{id}/informarPerdida")
+    @GetMapping(value="/{id}/informarPerdida")
     public ResponseEntity informarPerdida(@PathVariable long id){
         Usuario rescatista = getUsuarioLogeado();
         Mascota mascota = mascotaService.get(id);
@@ -87,6 +87,12 @@ public class MascotaController {
                 "Alguien encontro a tu mascota!",
                 cuerpoEmail);
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @GetMapping(value="/{id}")
+    public ResponseEntity obtenerMascota(@PathVariable long id){
+        Mascota mascota = mascotaService.get(id);
+        return new ResponseEntity(mascota,HttpStatus.OK);
     }
 
     private Usuario getUsuarioLogeado() {
