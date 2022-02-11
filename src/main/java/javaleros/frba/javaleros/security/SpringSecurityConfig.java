@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.converter.BufferedImageHttpMessageConverter;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,6 +27,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.cors.CorsConfiguration;
 
 import javax.annotation.PostConstruct;
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 @Order(101)
@@ -42,6 +45,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
   @PostConstruct
   public void completeSetup() {
     userDetailsService = applicationContext.getBean(MyUserDetailsService.class);
+  }
+
+  @Bean
+  public HttpMessageConverter<BufferedImage> createImageHttpMessageConverter() {
+    return new BufferedImageHttpMessageConverter();
   }
 
   @Override
@@ -63,6 +71,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(final HttpSecurity http) throws Exception {
     http.cors().and().csrf().disable()
         .authorizeRequests()
+            .antMatchers(HttpMethod.GET,"/caracterista").authenticated()
             .antMatchers(HttpMethod.POST, "/user/login").permitAll()
             .antMatchers(HttpMethod.POST, "/user/registrarse").permitAll()
             .antMatchers("/caracteristica/**").hasAuthority(ADMIN)

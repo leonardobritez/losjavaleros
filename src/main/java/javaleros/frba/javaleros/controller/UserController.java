@@ -41,6 +41,7 @@ public class UserController {
     @Autowired
     UsuarioServiceImpl usuarioService;
 
+    private final String PREFIX = "Bearer ";
     @PostMapping("/login")
     @ResponseBody
     public ResponseEntity login( @RequestBody LoginRequest loginRequest)  {
@@ -60,7 +61,7 @@ public class UserController {
     public ResponseEntity logout(@RequestHeader (name="Authorization") String token)  {
 
 
-        tokenRepository.delete(token);
+        tokenRepository.delete(token.replace(PREFIX, ""));
 
         return  new ResponseEntity(HttpStatus.NO_CONTENT);
 
