@@ -49,6 +49,7 @@ public class MascotaController {
                 .tipo(mascotaDto.getTipo())
                 .descripcion(mascotaDto.getDescripcion())
                 .edad(mascotaDto.getEdad())
+                .nombre(mascotaDto.getNombre())
                 .build();
         usuario.getMascotas().add(mascota);
         mascotaService.guardarMascota(mascota);
