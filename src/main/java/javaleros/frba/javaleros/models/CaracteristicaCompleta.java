@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.io.Serializable;
 
 //Caracteristica guardada dentro de una Mascota.
@@ -24,6 +25,8 @@ public class CaracteristicaCompleta implements Serializable {
   private int id;
   @ManyToOne
   private Caracteristica caracteristica;
+  @ManyToOne
+  private Mascota mascota;
   private String respuesta;
   
   

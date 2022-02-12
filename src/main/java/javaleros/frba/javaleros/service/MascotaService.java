@@ -5,15 +5,17 @@ import javaleros.frba.javaleros.repository.MascotaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class MascotaService {
 
     @Autowired
     private MascotaRepository  mascotaRepository;
 
-    public Mascota get(Integer id) {
+    public Optional<Mascota> get(Integer id) {
 
-       return mascotaRepository.getById(id);
+       return mascotaRepository.findById(id);
     }
 
     public Mascota guardarMascota(Mascota mascota) {

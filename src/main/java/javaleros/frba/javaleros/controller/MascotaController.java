@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/mascota")
 public class MascotaController {
@@ -75,11 +77,13 @@ public class MascotaController {
 
     @GetMapping(value="/{id}/informarPerdida")
     public ResponseEntity informarPerdidaConChapita(@PathVariable Integer id){
-        if(!mascotaService.existeMascota(id)) {
+
+        Usuario rescatista = getUsuarioLogeado();
+        Optional<Mascota> mascotaOptional = mascotaService.get(id);
+        if(mascotaOptional.isEmpty()){
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-        Usuario rescatista = getUsuarioLogeado();
-        Mascota mascota = mascotaService.get(id);
+        Mascota mascota = mascotaOptional.get();
         mascota.setEstado(MascotaEstadoEnum.PERDIDO);
 
         String cuerpoEmail = String.format(
@@ -97,10 +101,11 @@ public class MascotaController {
 
     @PostMapping(value="/{id}/informarPerdida")
     public ResponseEntity informarPerdidaConChapita(@PathVariable Integer id,@RequestBody RescatistaDto rescatistaDto){
-        if(!mascotaService.existeMascota(id)) {
+        Optional<Mascota> mascotaOptional = mascotaService.get(id);
+        if(mascotaOptional.isEmpty()){
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-        Mascota mascota = mascotaService.get(id);
+        Mascota mascota = mascotaOptional.get();
         mascota.setEstado(MascotaEstadoEnum.PERDIDO);
 
         String cuerpoEmail = String.format(
@@ -117,8 +122,13 @@ public class MascotaController {
 
     @GetMapping(value="/{id}")
     public ResponseEntity obtenerMascota(@PathVariable Integer id){
-        Mascota mascota = mascotaService.get(id);
+        Optional<Mascota> mascotaOptional = mascotaService.get(id);
+        if(mascotaOptional.isEmpty()){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        Mascota mascota = mascotaOptional.get();
         return new ResponseEntity(mascota,HttpStatus.OK);
+
     }
 
     private Usuario getUsuarioLogeado() {
