@@ -44,6 +44,8 @@ public class Publicacion {
   //todo "La asociación asignada a la publicación debe ser la más cercana a la ubicación donde se encontró la mascota."
   //en un principio, lo mas simple seria encontrar una Asociación en el mismo partido y si nó en la misma provincia.
 
+  //Publicacion: sirve para cuando encontras una mascota sin chapita o publicas en adopcion.
+
   //ORM requiere este constructor vacío.
   public Publicacion() {
   }
