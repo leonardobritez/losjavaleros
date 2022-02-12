@@ -1,6 +1,6 @@
 package javaleros.frba.javaleros.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +13,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.io.Serializable;
@@ -25,6 +24,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Mascota implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -34,7 +34,7 @@ public class Mascota implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Usuario duenio;
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "mascota")
     private List<CaracteristicaCompleta> caracteristicas;
     private String tipo;
     private String nombre;
