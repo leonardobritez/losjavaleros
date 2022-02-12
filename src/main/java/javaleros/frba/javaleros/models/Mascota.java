@@ -24,6 +24,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Mascota implements Serializable {
 
     private static final long serialVersionUID = 1L;
