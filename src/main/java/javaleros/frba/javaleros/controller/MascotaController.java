@@ -1,5 +1,7 @@
 package javaleros.frba.javaleros.controller;
 
+import javaleros.frba.javaleros.exceptions.NoEsVoluntarioException;
+import javaleros.frba.javaleros.exceptions.NotFound;
 import javaleros.frba.javaleros.helpers.QrGenerator;
 import javaleros.frba.javaleros.models.CaracteristicaCompleta;
 import javaleros.frba.javaleros.models.Mascota;
@@ -7,6 +9,7 @@ import javaleros.frba.javaleros.models.MascotaEstadoEnum;
 import javaleros.frba.javaleros.models.Usuario;
 import javaleros.frba.javaleros.models.dto.MascotaDto;
 import javaleros.frba.javaleros.models.dto.RescatistaDto;
+import javaleros.frba.javaleros.repository.CaracteristicaRepository;
 import javaleros.frba.javaleros.repository.UsuarioRepository;
 import javaleros.frba.javaleros.service.CaracteristicaService;
 import javaleros.frba.javaleros.service.EnviadorDeEmails;
@@ -18,6 +21,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -60,7 +64,7 @@ public class MascotaController {
         .nombre(mascotaDto.getNombre())
         .build();
     //poner a la mascota en cada caracteristica completa
-    for(CaracteristicaCompleta elem : caracteristicasCompletas){
+    for (CaracteristicaCompleta elem : caracteristicasCompletas) {
       elem.setMascota(mascota);
     }
     mascota.setCaracteristicas(caracteristicasCompletas);
@@ -150,6 +154,12 @@ public class MascotaController {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     String currentUserName = authentication.getName();
     return usuarioRepository.findByNombreUsuario(currentUserName);
+  }
+
+  @ExceptionHandler({NotFound.class})
+  public ResponseEntity<String> handleNoEsVoluntarioExceptionException(RuntimeException exception) {
+    return ResponseEntity.notFound().build();
+
   }
 
 

@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CaracteristicaService {
@@ -40,12 +39,12 @@ public class CaracteristicaService {
 
     ArrayList<CaracteristicaCompleta> caracteristicasCompletas = new ArrayList<>();
     for (CaracteristicaCompletaDto dto : dtos) {
-      Caracteristica caracteristica = caracteristicaRepository.getById(dto.getIdCaracteristicaOriginal());
-      if (caracteristica == null) {
+      if (!caracteristicaRepository.existsById(dto.getIdCaracteristicaOriginal())) {
         throw new NotFound("Caracteristica id " + dto.getIdCaracteristicaOriginal() + " not found");
       }
-
+      Caracteristica caracteristica = caracteristicaRepository.getById(dto.getIdCaracteristicaOriginal());
       CaracteristicaCompleta completa = new CaracteristicaCompleta();
+      completa.setId(caracteristica.getId());
       completa.setCaracteristica(caracteristica);
       completa.setRespuesta(dto.getRespuesta());
       caracteristicasCompletas.add(completa);

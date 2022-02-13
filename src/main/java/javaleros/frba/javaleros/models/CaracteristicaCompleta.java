@@ -21,11 +21,13 @@ import java.io.Serializable;
 @Setter
 @Entity
 public class CaracteristicaCompleta implements Serializable {
-  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
   @ManyToOne
   private Caracteristica caracteristica;
-  @ManyToOne@JsonIgnore
+  @ManyToOne
+  @JsonIgnore
   private Mascota mascota;
   private String respuesta;
   
