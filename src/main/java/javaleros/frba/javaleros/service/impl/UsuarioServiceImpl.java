@@ -3,7 +3,7 @@ package javaleros.frba.javaleros.service.impl;
 import javaleros.frba.javaleros.exceptions.EmailException;
 import javaleros.frba.javaleros.models.Usuario;
 import javaleros.frba.javaleros.models.dto.UsuarioDto;
-import javaleros.frba.javaleros.models.exeptions.InvalidPasswordException;
+import javaleros.frba.javaleros.exceptions.InvalidPasswordException;
 import javaleros.frba.javaleros.repository.RolRepository;
 import javaleros.frba.javaleros.repository.UsuarioRepository;
 import javaleros.frba.javaleros.security.storage.TokenRepository;

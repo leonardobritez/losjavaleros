@@ -1,6 +1,7 @@
 package javaleros.frba.javaleros.security;
 
 import javaleros.frba.javaleros.models.Asociacion;
+import javaleros.frba.javaleros.models.Caracteristica;
 import javaleros.frba.javaleros.models.Contacto;
 import javaleros.frba.javaleros.models.EstadoPublicacion;
 import javaleros.frba.javaleros.models.Privilegio;
@@ -8,6 +9,7 @@ import javaleros.frba.javaleros.models.Publicacion;
 import javaleros.frba.javaleros.models.Rol;
 import javaleros.frba.javaleros.models.Usuario;
 import javaleros.frba.javaleros.repository.AsociacionRepository;
+import javaleros.frba.javaleros.repository.CaracteristicaRepository;
 import javaleros.frba.javaleros.repository.ContactoRepository;
 import javaleros.frba.javaleros.repository.PrivilegioRepository;
 import javaleros.frba.javaleros.repository.PublicacionRepository;
@@ -50,6 +52,8 @@ public class SetupDataLoader implements
 
   private ContactoRepository contactoRepository;
 
+  private CaracteristicaRepository caracteristicaRepository;
+
   @Autowired
   private WebApplicationContext applicationContext;
 
@@ -61,6 +65,7 @@ public class SetupDataLoader implements
     asociacionRepository = applicationContext.getBean(AsociacionRepository.class);
     publicacionRepository = applicationContext.getBean(PublicacionRepository.class);
     contactoRepository = applicationContext.getBean(ContactoRepository.class);
+    caracteristicaRepository = applicationContext.getBean(CaracteristicaRepository.class);
   }
 
   @SneakyThrows
@@ -116,6 +121,19 @@ public class SetupDataLoader implements
         "2800", "San Martin", "Buenos Aires", EstadoPublicacion.APROBADA, asociacion1);
     publicacionRepository.save(publicacionAprobada);
     log.info("Publicacion aprobada creada con ID " + publicacionAprobada.getId().toString());
+
+
+    Caracteristica color = new Caracteristica();
+    color.setNombre("Color");
+    color.setTipo("TEXTO");
+
+    Caracteristica castrado = new Caracteristica();
+    castrado.setNombre("Esta castrado?");
+    castrado.setTipo("BOOLEAN");
+    caracteristicaRepository.save(color);
+    log.info("Caracteristica " + color.getNombre() + " creada con ID " + color.getId());
+    caracteristicaRepository.save(castrado);
+    log.info("Caracteristica " + castrado.getNombre() + " creada con ID " + castrado.getId());
 
     alreadySetup = true;
   }

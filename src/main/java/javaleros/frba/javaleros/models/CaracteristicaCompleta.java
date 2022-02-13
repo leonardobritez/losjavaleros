@@ -1,5 +1,6 @@
 package javaleros.frba.javaleros.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,12 +21,11 @@ import java.io.Serializable;
 @Setter
 @Entity
 public class CaracteristicaCompleta implements Serializable {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
   @ManyToOne
   private Caracteristica caracteristica;
-  @ManyToOne
+  @ManyToOne@JsonIgnore
   private Mascota mascota;
   private String respuesta;
   

@@ -18,7 +18,7 @@ import lombok.Getter;
 @EqualsAndHashCode
 public class MascotaDto {
 
-	private List<CaracteristicaCompleta> caracteristicas = new ArrayList<CaracteristicaCompleta>();
+	private List<CaracteristicaCompletaDto> caracteristicas = new ArrayList<CaracteristicaCompletaDto>();
 	private String tipo;
 	private String nombre;
 	private String apodo;

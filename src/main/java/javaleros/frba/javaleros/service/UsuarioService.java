@@ -2,7 +2,6 @@ package javaleros.frba.javaleros.service;
 
 import javaleros.frba.javaleros.models.Usuario;
 import javaleros.frba.javaleros.models.dto.UsuarioDto;
-import javaleros.frba.javaleros.models.exeptions.InvalidPasswordException;
 
 import java.util.Optional;
 

@@ -1,6 +1,6 @@
 package javaleros.frba.javaleros.models;
 
-import javaleros.frba.javaleros.models.exeptions.InvalidPasswordException;
+import javaleros.frba.javaleros.exceptions.InvalidPasswordException;
 import javaleros.frba.javaleros.security.PasswordValidatorSingleton;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

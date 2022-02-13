@@ -1,4 +1,4 @@
-package javaleros.frba.javaleros.models.exeptions;
+package javaleros.frba.javaleros.exceptions;
 
 public class UsuarionameNotFoundException extends Exception {
 }
