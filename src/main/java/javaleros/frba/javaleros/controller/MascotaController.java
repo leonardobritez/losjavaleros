@@ -1,6 +1,5 @@
 package javaleros.frba.javaleros.controller;
 
-import javaleros.frba.javaleros.exceptions.NoEsVoluntarioException;
 import javaleros.frba.javaleros.exceptions.NotFound;
 import javaleros.frba.javaleros.helpers.QrGenerator;
 import javaleros.frba.javaleros.models.CaracteristicaCompleta;
@@ -9,7 +8,7 @@ import javaleros.frba.javaleros.models.MascotaEstadoEnum;
 import javaleros.frba.javaleros.models.Usuario;
 import javaleros.frba.javaleros.models.dto.MascotaDto;
 import javaleros.frba.javaleros.models.dto.RescatistaDto;
-import javaleros.frba.javaleros.repository.CaracteristicaRepository;
+import javaleros.frba.javaleros.repository.CaracteristicaCompletaRepository;
 import javaleros.frba.javaleros.repository.UsuarioRepository;
 import javaleros.frba.javaleros.service.CaracteristicaService;
 import javaleros.frba.javaleros.service.EnviadorDeEmails;
@@ -21,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,13 +44,14 @@ public class MascotaController {
   private UsuarioRepository usuarioRepository;
   @Autowired
   private CaracteristicaService caracteristicaService;
+  @Autowired
+  private CaracteristicaCompletaRepository completaRepository;
 
   @PostMapping("")
-  public ResponseEntity<HttpStatus> registrarMascota(@RequestBody MascotaDto mascotaDto) {
+  @Transactional
+  public ResponseEntity<HttpStatus> registrarMascota(@RequestBody  final MascotaDto mascotaDto) {
     Usuario usuario = getUsuarioLogeado();
 
-    List<CaracteristicaCompleta> caracteristicasCompletas
-        = caracteristicaService.llenarCaracteristicas(mascotaDto.getCaracteristicas());
 
     Mascota mascota = Mascota.builder()
         .apodo(mascotaDto.getApodo())
@@ -63,14 +64,11 @@ public class MascotaController {
         .edad(mascotaDto.getEdad())
         .nombre(mascotaDto.getNombre())
         .build();
-    //poner a la mascota en cada caracteristica completa
-    for (CaracteristicaCompleta elem : caracteristicasCompletas) {
-      elem.setMascota(mascota);
-    }
-    mascota.setCaracteristicas(caracteristicasCompletas);
+
+    caracteristicaService.llenarCaracteristicas(mascotaDto.getCaracteristicas(), mascota);
 
     usuario.getMascotas().add(mascota);
-
+    //completaRepository.saveAll(caracteristicasCompletas);
     mascotaService.guardarMascota(mascota);
 
     return new ResponseEntity(mascota, HttpStatus.CREATED);
