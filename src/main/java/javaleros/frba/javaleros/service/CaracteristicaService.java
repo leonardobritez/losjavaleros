@@ -6,9 +6,11 @@ import javaleros.frba.javaleros.models.CaracteristicaCompleta;
 import javaleros.frba.javaleros.models.Mascota;
 import javaleros.frba.javaleros.models.dto.CaracteristicaCompletaDto;
 import javaleros.frba.javaleros.models.dto.CaracteristicaDto;
+import javaleros.frba.javaleros.repository.CaracteristicaCompletaRepository;
 import javaleros.frba.javaleros.repository.CaracteristicaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +20,9 @@ public class CaracteristicaService {
 
   @Autowired
   private CaracteristicaRepository caracteristicaRepository;
+
+  @Autowired
+  private CaracteristicaCompletaRepository completaRepository;
 
   public void agregarCaracteristica(CaracteristicaDto nuevaCaracteristica) {
 
@@ -36,9 +41,9 @@ public class CaracteristicaService {
     return caracteristicaRepository.findAll();
   }
 
-  public void llenarCaracteristicas(List<CaracteristicaCompletaDto> dtos, Mascota mascota) {
+  public List<CaracteristicaCompleta> llenarCaracteristicas(final List<CaracteristicaCompletaDto> dtos) {
 
-    ArrayList<CaracteristicaCompleta> caracteristicasCompletas = new ArrayList<>();
+    List<CaracteristicaCompleta> caracteristicasCompletas = new ArrayList<>();
 
     for (CaracteristicaCompletaDto dto : dtos) {
       if (!caracteristicaRepository.existsById(dto.getIdCaracteristicaOriginal())) {
@@ -53,11 +58,16 @@ public class CaracteristicaService {
       completa.setRespuesta(dto.getRespuesta());
       caracteristicasCompletas.add(completa);
     }
+    return caracteristicasCompletas;
+    /*
     //estas características completas pertenecen a esta mascota
     for (CaracteristicaCompleta completa : caracteristicasCompletas) {
       completa.setMascota(mascota);
     }
+    completaRepository.saveAll(caracteristicasCompletas);
+
+     */
     //la mascota tiene estas características
-    mascota.setCaracteristicasCompletas(caracteristicasCompletas);
+    //mascota.setCaracteristicasCompletas(caracteristicasCompletas);
   }
 }

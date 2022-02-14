@@ -14,6 +14,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
@@ -41,7 +42,7 @@ public class Mascota implements Serializable {
   private Usuario duenio;
   //@OneToMany(fetch = FetchType.LAZY,mappedBy = "mascota")
   //@OneToMany(cascade = CascadeType.MERGE, mappedBy = "mascota")
-  @OneToMany(mappedBy = "mascota", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "mascota")
   private List<CaracteristicaCompleta> caracteristicasCompletas;
   private String tipo;
   private String nombre;

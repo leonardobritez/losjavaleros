@@ -44,12 +44,9 @@ public class MascotaController {
   private UsuarioRepository usuarioRepository;
   @Autowired
   private CaracteristicaService caracteristicaService;
-  @Autowired
-  private CaracteristicaCompletaRepository completaRepository;
 
   @PostMapping("")
-  @Transactional
-  public ResponseEntity<HttpStatus> registrarMascota(@RequestBody  final MascotaDto mascotaDto) {
+  public ResponseEntity<HttpStatus> registrarMascota(@RequestBody final MascotaDto mascotaDto) {
     Usuario usuario = getUsuarioLogeado();
 
 
@@ -65,10 +62,11 @@ public class MascotaController {
         .nombre(mascotaDto.getNombre())
         .build();
 
-    caracteristicaService.llenarCaracteristicas(mascotaDto.getCaracteristicas(), mascota);
+    List<CaracteristicaCompleta> completas
+        = caracteristicaService.llenarCaracteristicas(mascotaDto.getCaracteristicas());
 
+    mascota.setCaracteristicasCompletas(completas);
     usuario.getMascotas().add(mascota);
-    //completaRepository.saveAll(caracteristicasCompletas);
     mascotaService.guardarMascota(mascota);
 
     return new ResponseEntity(mascota, HttpStatus.CREATED);
