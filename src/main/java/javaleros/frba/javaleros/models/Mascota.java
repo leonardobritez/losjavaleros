@@ -35,7 +35,7 @@ public class Mascota implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Usuario duenio;
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "mascota",cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "mascota",cascade = CascadeType.MERGE)
     private List<CaracteristicaCompleta> caracteristicas;
     private String tipo;
     private String nombre;

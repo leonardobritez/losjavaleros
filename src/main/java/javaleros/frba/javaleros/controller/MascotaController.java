@@ -63,12 +63,7 @@ public class MascotaController {
         .edad(mascotaDto.getEdad())
         .nombre(mascotaDto.getNombre())
         .build();
-    //poner a la mascota en cada caracteristica completa
-    for (CaracteristicaCompleta elem : caracteristicasCompletas) {
-      elem.setMascota(mascota);
-    }
     mascota.setCaracteristicas(caracteristicasCompletas);
-
     usuario.getMascotas().add(mascota);
 
     mascotaService.guardarMascota(mascota);

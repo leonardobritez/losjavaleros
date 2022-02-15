@@ -1,5 +1,6 @@
 package javaleros.frba.javaleros.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,6 +19,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Entity
 @Builder
+@JsonIgnoreProperties(ignoreUnknown = true,value = "hibernateLazyInitializer")
 public class Caracteristica {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
