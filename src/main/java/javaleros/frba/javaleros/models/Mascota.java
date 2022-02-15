@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -34,7 +35,7 @@ public class Mascota implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Usuario duenio;
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "mascota")
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "mascota",cascade = CascadeType.ALL)
     private List<CaracteristicaCompleta> caracteristicas;
     private String tipo;
     private String nombre;
