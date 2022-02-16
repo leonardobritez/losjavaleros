@@ -134,6 +134,18 @@ public class MascotaController {
         cuerpoEmail);
     return new ResponseEntity(HttpStatus.OK);
   }
+  @PostMapping(value = "/{id}/informarEncontrada")
+  public ResponseEntity informarEncontrada(@PathVariable Integer id) {
+    Optional<Mascota> mascotaOptional = mascotaService.get(id);
+    if (mascotaOptional.isEmpty()) {
+      return new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
+    Mascota mascota = mascotaOptional.get();
+    mascota.setEstado(MascotaEstadoEnum.ADOPTADO);
+    mascotaService.guardarMascota(mascota);
+
+    return new ResponseEntity(HttpStatus.OK);
+  }
 
   @GetMapping(value = "/{id}")
   public ResponseEntity obtenerMascota(@PathVariable Integer id) {
