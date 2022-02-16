@@ -1,6 +1,7 @@
 package javaleros.frba.javaleros.service.impl;
 
 import javaleros.frba.javaleros.exceptions.EmailException;
+import javaleros.frba.javaleros.exceptions.ValidationException;
 import javaleros.frba.javaleros.models.Usuario;
 import javaleros.frba.javaleros.models.dto.UsuarioDto;
 import javaleros.frba.javaleros.exceptions.InvalidPasswordException;
@@ -44,8 +45,12 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Usuario registerNewUsuarioAccount(UsuarioDto usuarioDto) throws EmailException, InvalidPasswordException {
         if (emailExists(usuarioDto.getEmail())) {
             throw new EmailException(
-                    ("There is an account with that email adress: " + usuarioDto.getEmail()));
+                    ("Ya existe un usuario con ese email." + usuarioDto.getEmail()));
         }
+        if (dniExists(usuarioDto.getDni())){
+            throw new ValidationException("Ya existe un usuario con ese dni.");
+        }
+
         Usuario user = new Usuario();
 
         user.setNombre(usuarioDto.getFirstName());
@@ -107,5 +112,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     private boolean emailExists(final String email) {
         return userRepository.findByEmail(email) != null;
+    }
+
+    private boolean dniExists(final Long dni){
+        return userRepository.findByDni(dni) != null;
     }
 }
