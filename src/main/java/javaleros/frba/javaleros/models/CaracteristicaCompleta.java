@@ -26,9 +26,9 @@ public class CaracteristicaCompleta implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
-  @ManyToOne(cascade = CascadeType.MERGE)
+  @ManyToOne
   private Caracteristica caracteristica;
-  @ManyToOne(cascade = CascadeType.MERGE)
+  @ManyToOne
   @JsonIgnore
   private Mascota mascota;
   private String respuesta;

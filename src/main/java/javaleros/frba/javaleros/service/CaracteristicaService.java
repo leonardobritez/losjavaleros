@@ -44,7 +44,6 @@ public class CaracteristicaService {
       }
       Caracteristica caracteristica = caracteristicaRepository.getById(dto.getIdCaracteristicaOriginal());
       CaracteristicaCompleta completa = new CaracteristicaCompleta();
-      completa.setId(caracteristica.getId());
       completa.setCaracteristica(caracteristica);
       completa.setRespuesta(dto.getRespuesta());
       caracteristicasCompletas.add(completa);
