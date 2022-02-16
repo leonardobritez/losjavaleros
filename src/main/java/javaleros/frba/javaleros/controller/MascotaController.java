@@ -11,6 +11,7 @@ import javaleros.frba.javaleros.models.dto.RescatistaDto;
 import javaleros.frba.javaleros.repository.UsuarioRepository;
 import javaleros.frba.javaleros.service.CaracteristicaService;
 import javaleros.frba.javaleros.service.EnviadorDeEmails;
+import javaleros.frba.javaleros.service.FotoService;
 import javaleros.frba.javaleros.service.MascotaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +37,10 @@ public class MascotaController {
   public static final String URL_CHAPITA = "localhost:8081/mascota/";
   @Autowired
   private MascotaService mascotaService;
+  
+  @Autowired
+  private FotoService fotoService;
+  
   @Autowired
   private EnviadorDeEmails enviadorDeEmails;
   @Autowired
@@ -42,32 +48,44 @@ public class MascotaController {
   @Autowired
   private CaracteristicaService caracteristicaService;
 
-  @PostMapping("")
-  public ResponseEntity<HttpStatus> registrarMascota(@RequestBody MascotaDto mascotaDto) {
-    Usuario usuario = getUsuarioLogeado();
+	@PostMapping("")
+	public ResponseEntity<HttpStatus> registrarMascota(@RequestBody MascotaDto mascotaDto) {
 
-    List<CaracteristicaCompleta> caracteristicasCompletas
-        = caracteristicaService.llenarCaracteristicas(mascotaDto.getCaracteristicas());
+		// transformo archivos Multipart a clase: Foto
+		for (MultipartFile file : mascotaDto.getFotos()) {
+			try {
+				fotoService.saveFile(file);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
-    Mascota mascota = Mascota.builder()
-        .apodo(mascotaDto.getApodo())
-        .duenio(usuario)
-        //.fotos(mascotaDto.getFotos())
-        .sexo(mascotaDto.getSexo())
-        .estado(MascotaEstadoEnum.ADOPTADO)
-        .tipo(mascotaDto.getTipo())
-        .descripcion(mascotaDto.getDescripcion())
-        .edad(mascotaDto.getEdad())
-        .nombre(mascotaDto.getNombre())
-        .build();
-    for (CaracteristicaCompleta elem : caracteristicasCompletas) {
-      elem.setMascota(mascota);
-    }    mascota.setCaracteristicas(caracteristicasCompletas);
-    usuario.getMascotas().add(mascota);
+		}
 
-    mascotaService.guardarMascota(mascota);
+		Usuario usuario = getUsuarioLogeado();
 
-    return new ResponseEntity(mascota, HttpStatus.CREATED);
+	    List<CaracteristicaCompleta> caracteristicasCompletas
+	        = caracteristicaService.llenarCaracteristicas(mascotaDto.getCaracteristicas());
+
+	    Mascota mascota = Mascota.builder()
+	        .apodo(mascotaDto.getApodo())
+	        .duenio(usuario)
+	        //.fotos(mascotaDto.getFotos())
+	        .sexo(mascotaDto.getSexo())
+	        .estado(MascotaEstadoEnum.ADOPTADO)
+	        .tipo(mascotaDto.getTipo())
+	        .descripcion(mascotaDto.getDescripcion())
+	        .edad(mascotaDto.getEdad())
+	        .nombre(mascotaDto.getNombre())
+	        .build();
+	    for (CaracteristicaCompleta elem : caracteristicasCompletas) {
+	      elem.setMascota(mascota);
+	    }    mascota.setCaracteristicas(caracteristicasCompletas);
+	    usuario.getMascotas().add(mascota);
+
+	    mascotaService.guardarMascota(mascota);
+
+	    return new ResponseEntity(mascota, HttpStatus.CREATED);
 
   }
 
@@ -132,6 +150,18 @@ public class MascotaController {
     enviadorDeEmails.enviarMail(mascota.getDuenio().getEmail(),
         "Alguien encontro a tu mascota!",
         cuerpoEmail);
+    return new ResponseEntity(HttpStatus.OK);
+  }
+  @PostMapping(value = "/{id}/informarEncontrada")
+  public ResponseEntity informarEncontrada(@PathVariable Integer id) {
+    Optional<Mascota> mascotaOptional = mascotaService.get(id);
+    if (mascotaOptional.isEmpty()) {
+      return new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
+    Mascota mascota = mascotaOptional.get();
+    mascota.setEstado(MascotaEstadoEnum.ADOPTADO);
+    mascotaService.guardarMascota(mascota);
+
     return new ResponseEntity(HttpStatus.OK);
   }
 

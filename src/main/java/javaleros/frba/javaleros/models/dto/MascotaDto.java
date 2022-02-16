@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.mail.Multipart;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import javaleros.frba.javaleros.models.CaracteristicaCompleta;
 import javaleros.frba.javaleros.models.MascotaEstadoEnum;
 import javaleros.frba.javaleros.models.SexoEnum;
@@ -25,7 +29,7 @@ public class MascotaDto {
 	private Integer edad;
 	private SexoEnum sexo;
 	private String descripcion;
-	private List<FotoDto> fotos;
+	private List<MultipartFile> fotos;
 	private MascotaEstadoEnum estado;
 
 
