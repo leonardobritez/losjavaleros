@@ -1,6 +1,7 @@
 package javaleros.frba.javaleros.controller;
 
 import javaleros.frba.javaleros.exceptions.EmailException;
+import javaleros.frba.javaleros.exceptions.ValidationException;
 import javaleros.frba.javaleros.models.Rol;
 import javaleros.frba.javaleros.models.Usuario;
 import javaleros.frba.javaleros.models.dto.LoginRequest;
@@ -26,7 +27,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RequestMapping("/user")
 @RestController
-public class UserController {
+public class UsuarioController {
 
 
     @Autowired
@@ -95,6 +96,8 @@ public class UserController {
         } catch (InvalidPasswordException invalidPasswordException){
             return ResponseEntity.badRequest().body("Contraseña no cumple con los estandares.");
 
+        } catch (ValidationException validationException){
+            return ResponseEntity.badRequest().body(validationException.getMessage());
         }
         return ResponseEntity.ok("Usuario registrado con email: " + usuarioDto.getEmail());
 
