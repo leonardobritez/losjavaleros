@@ -1,6 +1,5 @@
 package javaleros.frba.javaleros.controller;
 
-import javaleros.frba.javaleros.exceptions.NoEsVoluntarioException;
 import javaleros.frba.javaleros.exceptions.NotFound;
 import javaleros.frba.javaleros.helpers.QrGenerator;
 import javaleros.frba.javaleros.models.CaracteristicaCompleta;
@@ -9,12 +8,10 @@ import javaleros.frba.javaleros.models.MascotaEstadoEnum;
 import javaleros.frba.javaleros.models.Usuario;
 import javaleros.frba.javaleros.models.dto.MascotaDto;
 import javaleros.frba.javaleros.models.dto.RescatistaDto;
-import javaleros.frba.javaleros.repository.CaracteristicaRepository;
 import javaleros.frba.javaleros.repository.UsuarioRepository;
 import javaleros.frba.javaleros.service.CaracteristicaService;
 import javaleros.frba.javaleros.service.EnviadorDeEmails;
 import javaleros.frba.javaleros.service.MascotaService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -101,6 +98,7 @@ public class MascotaController {
     }
     Mascota mascota = mascotaOptional.get();
     mascota.setEstado(MascotaEstadoEnum.PERDIDO);
+    mascotaService.guardarMascota(mascota);
 
     String cuerpoEmail = String.format(
         "Hola una persona llamada %s %s encontró a tu mascota %s \n" +
@@ -123,6 +121,7 @@ public class MascotaController {
     }
     Mascota mascota = mascotaOptional.get();
     mascota.setEstado(MascotaEstadoEnum.PERDIDO);
+    mascotaService.guardarMascota(mascota);
 
     String cuerpoEmail = String.format(
         "Hola una persona llamada %s %s encontró a tu mascota %s \n" +
