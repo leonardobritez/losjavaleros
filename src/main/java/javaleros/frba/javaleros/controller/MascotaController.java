@@ -99,6 +99,7 @@ public class MascotaController {
     }
     Mascota mascota = mascotaOptional.get();
     mascota.setEstado(MascotaEstadoEnum.PERDIDO);
+    mascotaService.guardarMascota(mascota);
 
     String cuerpoEmail = String.format(
         "Hola una persona llamada %s %s encontró a tu mascota %s \n" +
@@ -121,6 +122,7 @@ public class MascotaController {
     }
     Mascota mascota = mascotaOptional.get();
     mascota.setEstado(MascotaEstadoEnum.PERDIDO);
+    mascotaService.guardarMascota(mascota);
 
     String cuerpoEmail = String.format(
         "Hola una persona llamada %s %s encontró a tu mascota %s \n" +
