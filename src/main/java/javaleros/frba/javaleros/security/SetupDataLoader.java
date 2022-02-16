@@ -128,7 +128,7 @@ public class SetupDataLoader implements
     color.setTipo("TEXTO");
 
     Caracteristica castrado = new Caracteristica();
-    castrado.setNombre("Esta castrado?");
+    castrado.setNombre("¿Está castrado?");
     castrado.setTipo("BOOLEAN");
     caracteristicaRepository.save(color);
     log.info("Caracteristica " + color.getNombre() + " creada con ID " + color.getId());
