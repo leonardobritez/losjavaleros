@@ -92,14 +92,14 @@ public class PublicacionesController {
     }
 
     // Listar publicaciones pendientes, solo pueden acceder voluntarios
-    @GetMapping("/pendientes")
-    public ResponseEntity<List<Publicacion>> listarPublicacionesPendientes() {
+    @GetMapping("/pendientes/{tipo}")
+    public ResponseEntity<List<Publicacion>> listarPublicacionesPendientes(@PathVariable Integer tipo) {
 
         if (!usuarioResgistradoEsVoluntario()) {
             throw new NoEsVoluntarioException();
         }
 
-        List<Publicacion> publicaciones = voluntarioService.listarPublicacionesPendientes();
+        List<Publicacion> publicaciones = voluntarioService.listarPublicacionesPendientes(tipo);
 
         return ResponseEntity.ok().body(publicaciones);
 
@@ -108,10 +108,10 @@ public class PublicacionesController {
     // Listar publicaciones aprobadas
     //2.5- Se debe permitir que una persona busque a su mascota perdida en la plataforma y que pueda
     //contactarse con el rescatista en caso de encontrarla.
-    @GetMapping("/aprobadas")
-    public ResponseEntity<List<Publicacion>> listarPublicacionesAprobadas() {
+    @GetMapping("/aprobadas{tipo}")
+    public ResponseEntity<List<Publicacion>> listarPublicacionesAprobadas(@PathVariable Integer tipo) {
 
-        List<Publicacion> publicaciones = voluntarioService.listarPublicacionesAprobadas();
+        List<Publicacion> publicaciones = voluntarioService.listarPublicacionesAprobadas(tipo);
 
         return ResponseEntity.ok().body(publicaciones);
 

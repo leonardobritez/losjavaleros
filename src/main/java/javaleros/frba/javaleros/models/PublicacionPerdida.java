@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,6 +20,8 @@ import java.util.List;
 @Setter
 @Entity
 @AllArgsConstructor
+@DiscriminatorValue("3")
+
 public class PublicacionPerdida extends Publicacion {
   private String especieDeLaMascota;
   private String colorDeLaMascota;

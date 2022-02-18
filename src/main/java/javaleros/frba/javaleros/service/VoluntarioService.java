@@ -102,17 +102,15 @@ public class VoluntarioService {
     publicacionRepository.save(publicacion);
   }
 
-  public List<Publicacion> listarPublicacionesPendientes() {
-    Publicacion publicacionPendiente = new Publicacion(EstadoPublicacion.PENDIENTE);
-    Example<Publicacion> example = Example.of(publicacionPendiente);
-    return publicacionRepository.findAll(example);
+  public List<Publicacion> listarPublicacionesPendientes(Integer tipo) {
+    return publicacionRepository.findPublicacionsByEstadoPublicacion(EstadoPublicacion.PENDIENTE,tipo);
+
 
   }
 
-  public List<Publicacion> listarPublicacionesAprobadas() {
-    Publicacion publicacionAprobada = new Publicacion(EstadoPublicacion.APROBADA);
-    Example<Publicacion> example = Example.of(publicacionAprobada);
-    return publicacionRepository.findAll(example);
+  public List<Publicacion> listarPublicacionesAprobadas(Integer tipo) {
+
+    return publicacionRepository.findPublicacionsByEstadoPublicacion(EstadoPublicacion.APROBADA,tipo);
 
   }
 

@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import java.util.List;
 
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,6 +23,8 @@ import javax.persistence.OneToOne;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @AllArgsConstructor
+@DiscriminatorColumn(name="type",
+        discriminatorType = DiscriminatorType.INTEGER)
 public class Publicacion {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

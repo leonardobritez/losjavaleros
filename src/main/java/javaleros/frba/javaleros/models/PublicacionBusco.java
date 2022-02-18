@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import java.util.List;
 
@@ -14,6 +16,8 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@DiscriminatorValue("2")
+
 public class PublicacionBusco  extends Publicacion{
 
   private String especieDeLaMascota;
