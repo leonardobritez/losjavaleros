@@ -1,6 +1,7 @@
 package javaleros.frba.javaleros.security;
 
 import static javaleros.frba.javaleros.models.Constants.ADMIN;
+import static javaleros.frba.javaleros.models.Constants.VOLUNTARIO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -75,6 +76,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.GET,"/mascota/*/informarPerdida").authenticated()
             .antMatchers(HttpMethod.POST,"/mascota/*/informarPerdida").permitAll()
             .antMatchers(HttpMethod.POST,"/mascota/*/informarEncontrada").authenticated()
+            .antMatchers(HttpMethod.GET,"/publicaciones/pendientes/3").hasAuthority(VOLUNTARIO)
 
             .antMatchers(HttpMethod.GET,"/mascota/{\\\\d+}").permitAll()
             .antMatchers("/mascota/**").authenticated()

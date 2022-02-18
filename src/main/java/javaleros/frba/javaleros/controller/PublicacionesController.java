@@ -95,10 +95,6 @@ public class PublicacionesController {
     @GetMapping("/pendientes/{tipo}")
     public ResponseEntity<List<Publicacion>> listarPublicacionesPendientes(@PathVariable Integer tipo) {
 
-        if (!usuarioResgistradoEsVoluntario()) {
-            throw new NoEsVoluntarioException();
-        }
-
         List<Publicacion> publicaciones = voluntarioService.listarPublicacionesPendientes(tipo);
 
         return ResponseEntity.ok().body(publicaciones);

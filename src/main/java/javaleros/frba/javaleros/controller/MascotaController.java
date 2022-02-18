@@ -208,6 +208,9 @@ public class MascotaController {
         if (mascotaOptional.isEmpty()) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
+        Mascota mascota = mascotaOptional.get();
+        mascota.setEstado(MascotaEstadoEnum.ENADOPCION);
+        mascotaService.guardarMascota(mascota);
         Usuario usuario = getUsuarioLogeado();
         Publicacion publicacionAdopcion = PublicacionAdopcion.builder()
                 .usuario(usuario)
@@ -218,9 +221,8 @@ public class MascotaController {
                 .provincia(publicacionDTO.getProvincia())
                 .calle(publicacionDTO.getCalle())
                 .altura(publicacionDTO.getAltura())
-                .mascota(mascotaOptional.get())
+                .mascota(mascota)
                 .build();
-
         publicacionRepository.save(publicacionAdopcion);
         return new ResponseEntity(publicacionAdopcion,HttpStatus.CREATED);
     }
