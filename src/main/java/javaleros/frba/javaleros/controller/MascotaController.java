@@ -202,7 +202,7 @@ public class MascotaController {
   }
 
     @PostMapping(value = "/{id}/ponerenadopcion")
-    public ResponseEntity ponerEnAdopcion(@PathVariable Integer id, PublicacionDTO publicacionDTO) {
+    public ResponseEntity ponerEnAdopcion(@PathVariable Integer id, @RequestBody PublicacionDTO publicacionDTO) {
 
         Optional<Mascota> mascotaOptional = mascotaService.get(id);
         if (mascotaOptional.isEmpty()) {
@@ -228,7 +228,7 @@ public class MascotaController {
     }
 
     @PostMapping(value = "/publicarperdida")
-    public ResponseEntity informarPerdida(PublicacionDTO publicacionDTO) {
+    public ResponseEntity informarPerdida(@RequestBody PublicacionDTO publicacionDTO) {
 
         Usuario usuario = getUsuarioLogeado();
         Publicacion publicacionPerdida = PublicacionPerdida.builder()
