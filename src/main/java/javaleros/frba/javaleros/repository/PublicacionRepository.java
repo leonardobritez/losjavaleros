@@ -15,7 +15,7 @@ import java.util.List;
 public interface PublicacionRepository extends JpaRepository<Publicacion, Integer> {
 
 
-    @Query("SELECT u FROM Publicacion u WHERE u.estadoPublicacion = ?1 and TYPE(u) = ?2")
+    @Query("SELECT u FROM Publicacion u WHERE u.estadoPublicacion = ?1 and type = ?2")
     List<Publicacion> findPublicacionsByEstadoPublicacion(EstadoPublicacion estadoPublicacion,Integer integer);
 
 }

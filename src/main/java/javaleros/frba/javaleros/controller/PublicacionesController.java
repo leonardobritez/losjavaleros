@@ -22,11 +22,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController("/publicaciones")
+@RestController
+@RequestMapping("/publicaciones")
 public class PublicacionesController {
 
     @Autowired
@@ -104,7 +106,7 @@ public class PublicacionesController {
     // Listar publicaciones aprobadas
     //2.5- Se debe permitir que una persona busque a su mascota perdida en la plataforma y que pueda
     //contactarse con el rescatista en caso de encontrarla.
-    @GetMapping("/aprobadas{tipo}")
+    @GetMapping("/aprobadas/{tipo}")
     public ResponseEntity<List<Publicacion>> listarPublicacionesAprobadas(@PathVariable Integer tipo) {
 
         List<Publicacion> publicaciones = voluntarioService.listarPublicacionesAprobadas(tipo);

@@ -76,7 +76,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.GET,"/mascota/*/informarPerdida").authenticated()
             .antMatchers(HttpMethod.POST,"/mascota/*/informarPerdida").permitAll()
             .antMatchers(HttpMethod.POST,"/mascota/*/informarEncontrada").authenticated()
-            .antMatchers(HttpMethod.GET,"/publicaciones/pendientes/3").hasAuthority(VOLUNTARIO)
+            .antMatchers("/publicaciones/**").permitAll()
 
             .antMatchers(HttpMethod.GET,"/mascota/{\\\\d+}").permitAll()
             .antMatchers("/mascota/**").authenticated()
