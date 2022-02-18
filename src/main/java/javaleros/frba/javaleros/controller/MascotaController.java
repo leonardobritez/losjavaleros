@@ -4,6 +4,7 @@ import javaleros.frba.javaleros.exceptions.NotFound;
 import javaleros.frba.javaleros.helpers.QrGenerator;
 import javaleros.frba.javaleros.models.CaracteristicaCompleta;
 import javaleros.frba.javaleros.models.EstadoPublicacion;
+import javaleros.frba.javaleros.models.Foto;
 import javaleros.frba.javaleros.models.Mascota;
 import javaleros.frba.javaleros.models.MascotaEstadoEnum;
 import javaleros.frba.javaleros.models.Publicacion;
@@ -17,7 +18,6 @@ import javaleros.frba.javaleros.repository.PublicacionRepository;
 import javaleros.frba.javaleros.repository.UsuarioRepository;
 import javaleros.frba.javaleros.service.CaracteristicaService;
 import javaleros.frba.javaleros.service.EnviadorDeEmails;
-import javaleros.frba.javaleros.service.FotoService;
 import javaleros.frba.javaleros.service.MascotaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,10 +33,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/mascota")
@@ -48,8 +48,6 @@ public class MascotaController {
   @Autowired
   private PublicacionRepository publicacionRepository;
 
-  @Autowired
-  private FotoService fotoService;
   
   @Autowired
   private EnviadorDeEmails enviadorDeEmails;
@@ -58,32 +56,53 @@ public class MascotaController {
   @Autowired
   private CaracteristicaService caracteristicaService;
 
+/*
+  const onFileChange = (e) => {
+    const files = e.target.files;
+    const pushedFiles = [];
+    for (let i = 0; i < files.length; i++) {
+      let promise = getBase64(files[i])
+      promise.then(function(result) {
+        var arch = {
+          data: result,
+          fileName: files[i].name
+        }
+        console.log(arch)
+        pushedFiles.push(arch)
+    });
 
+    }
+    setFotos(pushedFiles);
+  };
 
-  	@PostMapping(value = "/", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+  function getBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+  }
+
+ */
+
+  	@PostMapping()
   	@ResponseBody
 	public ResponseEntity<HttpStatus> registrarMascota(@RequestBody MascotaDto mascotaDto) {
-
-		// transformo archivos Multipart a clase: Foto
-		for (MultipartFile file : mascotaDto.getFotos()) {
-			try {
-				fotoService.saveFile(file);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		}
 
 		Usuario usuario = getUsuarioLogeado();
 
 	    List<CaracteristicaCompleta> caracteristicasCompletas
 	        = caracteristicaService.llenarCaracteristicas(mascotaDto.getCaracteristicas());
 
+        List<Foto> fotos = mascotaDto.getFotos().stream().map(fotoDto -> Foto.builder()
+                .data(fotoDto.getData())
+                .fileName(fotoDto.getFileName())
+                .build()).collect(Collectors.toList());
 	    Mascota mascota = Mascota.builder()
 	        .apodo(mascotaDto.getApodo())
 	        .duenio(usuario)
-	        //.fotos(mascotaDto.getFotos())
+	        .fotos(fotos)
 	        .sexo(mascotaDto.getSexo())
 	        .estado(MascotaEstadoEnum.ADOPTADO)
 	        .tipo(mascotaDto.getTipo())

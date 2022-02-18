@@ -14,12 +14,7 @@ public class MascotaService {
 
 	@Autowired
 	private MascotaRepository mascotaRepository;
-	
-	@Autowired
-	private FotoRepository fotoRepository;
-	
-	@Autowired
-	FotoService fotoService;
+
 
 	
 	public Optional<Mascota> get(Integer id) {

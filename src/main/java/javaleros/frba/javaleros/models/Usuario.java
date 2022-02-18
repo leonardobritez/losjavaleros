@@ -1,5 +1,6 @@
 package javaleros.frba.javaleros.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import javaleros.frba.javaleros.exceptions.InvalidPasswordException;
 import javaleros.frba.javaleros.security.PasswordValidatorSingleton;
 import lombok.Getter;
@@ -26,6 +27,7 @@ public class Usuario {
     private String nombre;
     private String apellido;
     private String email;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String contrasenia;
     @Column(unique = true)
     private String nombreUsuario;

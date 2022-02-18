@@ -6,12 +6,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@Builder
 public class Foto {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,19 +23,11 @@ public class Foto {
 
   private String fileName;
 
-  private String fileType;
-
   @Lob
-  private byte[] data;
+  private String data;
 
   public Foto() {
 
-  }
-
-  public Foto(String fileName, String fileType, byte[] data) {
-      this.fileName = fileName;
-      this.fileType = fileType;
-      this.data = data;
   }
 
 }

@@ -4,20 +4,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Data
 public class FotoDto {
-	
-	  @Id
-	  @GeneratedValue(strategy = GenerationType.IDENTITY)
-	  private Long id;
 
-	  //todo implementar tipo de dato para archivo
-	  private String foto;
+	private String fileName;
 
-	  //todo aca formatear la foto!!!
-
+	private String data;
 }

@@ -43,7 +43,7 @@ public class Mascota implements Serializable {
     private Integer edad;
     private SexoEnum sexo;
     private String descripcion;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Foto> fotos;
     private MascotaEstadoEnum estado;
 

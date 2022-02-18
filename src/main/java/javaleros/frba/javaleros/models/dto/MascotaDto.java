@@ -29,7 +29,7 @@ public class MascotaDto {
 	private Integer edad;
 	private SexoEnum sexo;
 	private String descripcion;
-	private List<MultipartFile> fotos;
+	private List<FotoDto> fotos;
 	private MascotaEstadoEnum estado;
 
 
