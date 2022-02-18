@@ -4,13 +4,12 @@ import javaleros.frba.javaleros.exceptions.NoEsVoluntarioException;
 import javaleros.frba.javaleros.models.EstadoPublicacion;
 import javaleros.frba.javaleros.models.Publicacion;
 import javaleros.frba.javaleros.models.PublicacionBusco;
-import javaleros.frba.javaleros.models.PublicacionPerdida;
 import javaleros.frba.javaleros.models.Usuario;
 import javaleros.frba.javaleros.models.dto.PublicacionDTO;
 import javaleros.frba.javaleros.repository.PublicacionRepository;
 import javaleros.frba.javaleros.repository.UsuarioRepository;
 import javaleros.frba.javaleros.repository.VoluntarioRepository;
-import javaleros.frba.javaleros.service.MascotaService;
+import javaleros.frba.javaleros.service.EnviadorDeEmails;
 import javaleros.frba.javaleros.service.VoluntarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/publicaciones")
@@ -39,6 +39,8 @@ public class PublicacionesController {
     private  VoluntarioService voluntarioService;
     @Autowired
     private VoluntarioRepository voluntarioRepository;
+    @Autowired
+    private EnviadorDeEmails enviadorDeEmails;
 
 
 
@@ -115,6 +117,27 @@ public class PublicacionesController {
 
     }
 
+    @GetMapping("/{id}/contactar")
+    public ResponseEntity contactarPublicacion(@PathVariable final Integer  id) {
+        Usuario usuario = getUsuarioLogeado();
+        Optional<Publicacion> publicacion = publicacionRepository.findById(id);
+        if(publicacion.isPresent()){
+            Usuario publicador = publicacion.get().getUsuario();
+            String cuerpoEmail = String.format(
+                    "Hola una persona llamada %s %s quiere contactarte por tu publicacion  %s \n" +
+                            "Contactate con %s",
+                    usuario.getNombre(),
+                    usuario.getApellido(),
+                    publicacion.get().getDescripcion(), usuario.getEmail());
+            enviadorDeEmails.enviarMail(publicador.getEmail(),
+                    "Alguien quiere contactarse con vos!",
+                    cuerpoEmail);
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
+
+
+    }
 
     private Usuario getUsuarioLogeado() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

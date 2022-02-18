@@ -158,7 +158,7 @@ public class MascotaController {
         "Hola una persona llamada %s %s encontró a tu mascota %s \n" +
             "Contactate con %s",
         rescatistaDto.getNombre(),
-        rescatistaDto.getNombre(),
+        rescatistaDto.getApellido(),
         mascota.getNombre(), rescatistaDto.getEmail());
     enviadorDeEmails.enviarMail(mascota.getDuenio().getEmail(),
         "Alguien encontro a tu mascota!",
