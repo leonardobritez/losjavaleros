@@ -23,19 +23,16 @@ import java.util.List;
 public class PublicacionAdopcion extends Publicacion {
   @Builder
   public PublicacionAdopcion(Usuario usuario, List<Foto> fotos, String descripcion, String calle, String altura, String partido, String provincia, EstadoPublicacion estadoPublicacion, Asociacion asociacion,
-                             Mascota mascota,
-                             List<Pregunta> preguntas) {
+                             Mascota mascota) {
     super(usuario, fotos, descripcion, calle, altura, partido, provincia, estadoPublicacion, asociacion);
     this.mascota = mascota;
-    this.preguntas = preguntas;
+
   }
 
   @OneToOne
   private Mascota mascota;
 
 
-  @OneToMany
-  private List<Pregunta> preguntas;
 
 
 

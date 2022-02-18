@@ -219,7 +219,6 @@ public class MascotaController {
                 .calle(publicacionDTO.getCalle())
                 .altura(publicacionDTO.getAltura())
                 .mascota(mascotaOptional.get())
-                .preguntas(publicacionDTO.getPreguntas())
                 .build();
 
         publicacionRepository.save(publicacionAdopcion);
