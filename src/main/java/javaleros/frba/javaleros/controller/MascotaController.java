@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -48,7 +49,8 @@ public class MascotaController {
   @Autowired
   private CaracteristicaService caracteristicaService;
 
-	@PostMapping("")
+  	@PostMapping(value = "/", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+  	@ResponseBody
 	public ResponseEntity<HttpStatus> registrarMascota(@RequestBody MascotaDto mascotaDto) {
 
 		// transformo archivos Multipart a clase: Foto
