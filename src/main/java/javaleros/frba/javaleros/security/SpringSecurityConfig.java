@@ -79,6 +79,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.GET,"/mascota/{\\\\d+}").permitAll()
             .antMatchers("/mascota/**").authenticated()
 
+            .antMatchers(HttpMethod.GET, "/hogaresDeTransito").permitAll()
+
             .antMatchers(HttpMethod.POST, "/user/login").permitAll()
             .antMatchers(HttpMethod.POST, "/user/registrarse").permitAll()
             .antMatchers("/caracteristica/**").hasAuthority(ADMIN)
