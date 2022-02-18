@@ -6,6 +6,8 @@ import javaleros.frba.javaleros.models.Contacto;
 import javaleros.frba.javaleros.models.EstadoPublicacion;
 import javaleros.frba.javaleros.models.Privilegio;
 import javaleros.frba.javaleros.models.Publicacion;
+import javaleros.frba.javaleros.models.PublicacionBusco;
+import javaleros.frba.javaleros.models.PublicacionPerdida;
 import javaleros.frba.javaleros.models.Rol;
 import javaleros.frba.javaleros.models.Usuario;
 import javaleros.frba.javaleros.repository.AsociacionRepository;
@@ -102,8 +104,19 @@ public class SetupDataLoader implements
     asociacionRepository.save(asociacion1);
     log.info("Asociación 'Salvemos a los gatitos' creada con ID " + asociacion1.getId().toString());
 
-    Publicacion publicacionPendiente = new Publicacion(user, null, "Descripcion",
-        EstadoPublicacion.PENDIENTE);
+    Publicacion publicacionPendiente = PublicacionPerdida.builder()
+            .descripcion("Encontrado")
+            .usuario(user)
+            .estadoPublicacion(EstadoPublicacion.PENDIENTE)
+            .asociacion(asociacion1)
+            .colorDeLaMascota("negro")
+            .partido("CABA")
+            .provincia("Buenos Aires")
+            .sexoDeLaMascota("macho")
+            .especieDeLaMascota("GATO")
+            .calle("Av. Siempreviva")
+            .altura("1900")
+            .build();
     publicacionRepository.save(publicacionPendiente);
     log.info("Publicacion pendiente creada con ID " + publicacionPendiente.getId().toString());
 
@@ -115,10 +128,20 @@ public class SetupDataLoader implements
     Contacto contacto = new Contacto(null, 44428421L, "esmiemail@gmail.com");
     contactoRepository.save(contacto);
     
-    Publicacion publicacionAprobada = new Publicacion(null, "Fabrizio", "Fernandez",
-        349282634L, contacto, null, "Encontrado durante el dia jueves por la noche",
-        "gato", "gris", "macho", "Av. Siempreviva",
-        "2800", "San Martin", "Buenos Aires", EstadoPublicacion.APROBADA, asociacion1);
+    Publicacion publicacionAprobada =  PublicacionBusco.builder()
+            .descripcion("Busco Adoptar Gato")
+            .usuario(user)
+            .estadoPublicacion(EstadoPublicacion.APROBADA)
+            .asociacion(asociacion1)
+            .colorDeLaMascota("negro")
+            .partido("CABA")
+            .edad(1.0)
+            .provincia("Buenos Aires")
+            .sexoDeLaMascota("macho")
+            .especieDeLaMascota("GATO")
+            .calle("Av. Siempreviva")
+            .altura("1900")
+            .build();
     publicacionRepository.save(publicacionAprobada);
     log.info("Publicacion aprobada creada con ID " + publicacionAprobada.getId().toString());
 

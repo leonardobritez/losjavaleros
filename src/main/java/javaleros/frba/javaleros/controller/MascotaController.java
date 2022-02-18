@@ -3,11 +3,17 @@ package javaleros.frba.javaleros.controller;
 import javaleros.frba.javaleros.exceptions.NotFound;
 import javaleros.frba.javaleros.helpers.QrGenerator;
 import javaleros.frba.javaleros.models.CaracteristicaCompleta;
+import javaleros.frba.javaleros.models.EstadoPublicacion;
 import javaleros.frba.javaleros.models.Mascota;
 import javaleros.frba.javaleros.models.MascotaEstadoEnum;
+import javaleros.frba.javaleros.models.Publicacion;
+import javaleros.frba.javaleros.models.PublicacionAdopcion;
+import javaleros.frba.javaleros.models.PublicacionPerdida;
 import javaleros.frba.javaleros.models.Usuario;
 import javaleros.frba.javaleros.models.dto.MascotaDto;
+import javaleros.frba.javaleros.models.dto.PublicacionDTO;
 import javaleros.frba.javaleros.models.dto.RescatistaDto;
+import javaleros.frba.javaleros.repository.PublicacionRepository;
 import javaleros.frba.javaleros.repository.UsuarioRepository;
 import javaleros.frba.javaleros.service.CaracteristicaService;
 import javaleros.frba.javaleros.service.EnviadorDeEmails;
@@ -38,7 +44,10 @@ public class MascotaController {
   public static final String URL_CHAPITA = "localhost:8081/mascota/";
   @Autowired
   private MascotaService mascotaService;
-  
+
+  @Autowired
+  private PublicacionRepository publicacionRepository;
+
   @Autowired
   private FotoService fotoService;
   
@@ -48,6 +57,8 @@ public class MascotaController {
   private UsuarioRepository usuarioRepository;
   @Autowired
   private CaracteristicaService caracteristicaService;
+
+
 
   	@PostMapping(value = "/", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
   	@ResponseBody
@@ -189,6 +200,53 @@ public class MascotaController {
     return ResponseEntity.notFound().build();
 
   }
+
+    @PostMapping(value = "/{id}/ponerenadopcion")
+    public ResponseEntity ponerEnAdopcion(@PathVariable Integer id, PublicacionDTO publicacionDTO) {
+
+        Optional<Mascota> mascotaOptional = mascotaService.get(id);
+        if (mascotaOptional.isEmpty()) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        Usuario usuario = getUsuarioLogeado();
+        Publicacion publicacionAdopcion = PublicacionAdopcion.builder()
+                .usuario(usuario)
+                .estadoPublicacion(EstadoPublicacion.PENDIENTE)
+                //.fotos(publicacionDTO.getFotos())
+                .descripcion(publicacionDTO.getDescripcion())
+                .partido(publicacionDTO.getPartido())
+                .provincia(publicacionDTO.getProvincia())
+                .calle(publicacionDTO.getCalle())
+                .altura(publicacionDTO.getAltura())
+                .mascota(mascotaOptional.get())
+                .preguntas(publicacionDTO.getPreguntas())
+                .build();
+
+        publicacionRepository.save(publicacionAdopcion);
+        return new ResponseEntity(publicacionAdopcion,HttpStatus.CREATED);
+    }
+
+    @PostMapping(value = "/publicarperdida")
+    public ResponseEntity informarPerdida(PublicacionDTO publicacionDTO) {
+
+        Usuario usuario = getUsuarioLogeado();
+        Publicacion publicacionPerdida = PublicacionPerdida.builder()
+                .usuario(usuario)
+                .estadoPublicacion(EstadoPublicacion.PENDIENTE)
+                //.fotos(publicacionDTO.getFotos())
+                .descripcion(publicacionDTO.getDescripcion())
+                .partido(publicacionDTO.getPartido())
+                .provincia(publicacionDTO.getProvincia())
+                .calle(publicacionDTO.getCalle())
+                .altura(publicacionDTO.getAltura())
+                .especieDeLaMascota(publicacionDTO.getEspecieDeLaMascota())
+                .sexoDeLaMascota(publicacionDTO.getSexoDeLaMascota())
+                .colorDeLaMascota(publicacionDTO.getColorDeLaMascota())
+                .build();
+
+        publicacionRepository.save(publicacionPerdida);
+        return new ResponseEntity(publicacionPerdida,HttpStatus.CREATED);
+    }
 
 
 }

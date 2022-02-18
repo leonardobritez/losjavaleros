@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -17,27 +19,24 @@ import javax.persistence.OneToOne;
 @Getter
 @Setter
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @AllArgsConstructor
 public class Publicacion {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
-  private String nombre;
-  private String apellido;
-  private Long dni;
-  @OneToOne
-  private Contacto contacto;
+  @ManyToOne
+  private Usuario usuario;
   @OneToMany
   private List<Foto> fotos;
   private String descripcion;
-  private String especieDeLaMascota;
-  private String colorDeLaMascota;
-  private String sexoDeLaMascota;
+
   private String calle;
   private String altura;
   private String partido;
   private String provincia;
   private EstadoPublicacion estadoPublicacion;
+
   @ManyToOne
   private Asociacion asociacion;
 
@@ -54,15 +53,27 @@ public class Publicacion {
     this.estadoPublicacion = estadoPublicacion;
   }
 
-  public Publicacion(final Usuario usuario, final List<Foto> fotos, final String descripcion,
-                     final EstadoPublicacion estadoPublicacion) {
-    this.nombre = usuario.getNombre();
-    this.apellido = usuario.getApellido();
-    this.dni = usuario.getDni();
+  public Publicacion(Usuario usuario, List<Foto> fotos, String descripcion, String calle, String altura, String partido, String provincia, EstadoPublicacion estadoPublicacion, Asociacion asociacion) {
+    this.usuario = usuario;
     this.fotos = fotos;
     this.descripcion = descripcion;
+    this.calle = calle;
+    this.altura = altura;
+    this.partido = partido;
+    this.provincia = provincia;
     this.estadoPublicacion = estadoPublicacion;
+    this.asociacion = asociacion;
   }
+
+  public Publicacion(final Usuario usuario, final List<Foto> fotos, final String descripcion,
+                     final EstadoPublicacion estadoPublicacion) {
+    this.usuario = usuario;
+    this.descripcion = descripcion;
+    this.fotos = fotos;
+    this.estadoPublicacion = estadoPublicacion;
+
+  }
+
 
   public void aprobar() {
     this.estadoPublicacion = EstadoPublicacion.APROBADA;

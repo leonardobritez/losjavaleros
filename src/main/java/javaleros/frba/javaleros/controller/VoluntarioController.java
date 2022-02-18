@@ -69,59 +69,6 @@ public class VoluntarioController {
 
   }
 
-  //PUNTO 2.3
-  @PostMapping("/aprobarPublicacion/{idPublicacion}")
-  public ResponseEntity<HttpStatus> aprobarPublicacion(@PathVariable final int idPublicacion) {
-
-    if (!usuarioResgistradoEsVoluntario()) {
-      throw new NoEsVoluntarioException();
-    }
-
-    voluntarioService.aprobarPublicacion(idPublicacion);
-
-    return new ResponseEntity<>(HttpStatus.OK);
-
-  }
-
-  //PUNTO 2.3
-  @PostMapping("/rechazarPublicacion/{idPublicacion}")
-  public ResponseEntity<HttpStatus> rechazarPublicacion(@PathVariable final int idPublicacion) {
-
-    if (!usuarioResgistradoEsVoluntario()) {
-      throw new NoEsVoluntarioException();
-    }
-
-    voluntarioService.rechazarPublicacion(idPublicacion);
-
-    return new ResponseEntity<>(HttpStatus.OK);
-
-  }
-
-  // Listar publicaciones pendientes, solo pueden acceder voluntarios
-  @GetMapping("/publicaciones/pendientes")
-  public ResponseEntity<List<Publicacion>> listarPublicacionesPendientes() {
-
-    if (!usuarioResgistradoEsVoluntario()) {
-      throw new NoEsVoluntarioException();
-    }
-
-    List<Publicacion> publicaciones = voluntarioService.listarPublicacionesPendientes();
-
-    return ResponseEntity.ok().body(publicaciones);
-
-  }
-
-  // Listar publicaciones aprobadas
-  //2.5- Se debe permitir que una persona busque a su mascota perdida en la plataforma y que pueda
-  //contactarse con el rescatista en caso de encontrarla.
-  @GetMapping("/publicaciones/aprobadas")
-  public ResponseEntity<List<Publicacion>> listarPublicacionesAprobadas() {
-
-    List<Publicacion> publicaciones = voluntarioService.listarPublicacionesAprobadas();
-
-    return ResponseEntity.ok().body(publicaciones);
-
-  }
 
   // Listar Asociaciones disponibles
   @GetMapping("/asociaciones")
