@@ -56,36 +56,6 @@ public class MascotaController {
   @Autowired
   private CaracteristicaService caracteristicaService;
 
-/*
-  const onFileChange = (e) => {
-    const files = e.target.files;
-    const pushedFiles = [];
-    for (let i = 0; i < files.length; i++) {
-      let promise = getBase64(files[i])
-      promise.then(function(result) {
-        var arch = {
-          data: result,
-          fileName: files[i].name
-        }
-        console.log(arch)
-        pushedFiles.push(arch)
-    });
-
-    }
-    setFotos(pushedFiles);
-  };
-
-  function getBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = error => reject(error);
-    });
-  }
-
- */
-
   	@PostMapping()
   	@ResponseBody
 	public ResponseEntity<HttpStatus> registrarMascota(@RequestBody MascotaDto mascotaDto) {
