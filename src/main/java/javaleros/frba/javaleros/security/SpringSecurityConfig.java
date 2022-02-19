@@ -80,6 +80,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
             .antMatchers(HttpMethod.GET,"/mascota/{\\\\d+}").permitAll()
             .antMatchers("/mascota/**").authenticated()
+            .antMatchers("/mascota").authenticated()
+
 
             .antMatchers(HttpMethod.GET, "/hogaresDeTransito").permitAll()
 
