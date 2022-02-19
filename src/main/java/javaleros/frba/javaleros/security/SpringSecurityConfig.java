@@ -72,7 +72,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(final HttpSecurity http) throws Exception {
     http.cors().and().csrf().disable()
         .authorizeRequests()
-            .antMatchers(HttpMethod.GET,"/caracterista").authenticated()
+            .antMatchers(HttpMethod.GET,"/caracteristica").authenticated()
             .antMatchers(HttpMethod.GET,"/mascota/*/informarPerdida").authenticated()
             .antMatchers(HttpMethod.POST,"/mascota/*/informarPerdida").permitAll()
             .antMatchers(HttpMethod.POST,"/mascota/*/informarEncontrada").authenticated()
