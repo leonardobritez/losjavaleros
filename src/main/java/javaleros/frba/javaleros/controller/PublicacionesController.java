@@ -49,14 +49,9 @@ public class PublicacionesController {
     @PostMapping("/buscarmascota")
     private ResponseEntity crearPublicacionDeBuscarMascota(@RequestBody PublicacionDTO publicacionDTO){
         Usuario usuario = getUsuarioLogeado();
-        List<Foto> fotos = publicacionDTO.getFotos().stream().map(fotoDto -> Foto.builder()
-                .data(fotoDto.getData())
-                .fileName(fotoDto.getFileName())
-                .build()).collect(Collectors.toList());
         Publicacion publicacionPerdida = PublicacionBusco.builder()
                 .usuario(usuario)
                 .estadoPublicacion(EstadoPublicacion.PENDIENTE)
-                .fotos(fotos)
                 .edad(publicacionDTO.getEdad())
                 .descripcion(publicacionDTO.getDescripcion())
                 .partido(publicacionDTO.getPartido())
