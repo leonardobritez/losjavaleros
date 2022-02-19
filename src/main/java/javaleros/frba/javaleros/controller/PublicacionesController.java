@@ -2,6 +2,7 @@ package javaleros.frba.javaleros.controller;
 
 import javaleros.frba.javaleros.exceptions.NoEsVoluntarioException;
 import javaleros.frba.javaleros.models.EstadoPublicacion;
+import javaleros.frba.javaleros.models.Foto;
 import javaleros.frba.javaleros.models.Publicacion;
 import javaleros.frba.javaleros.models.PublicacionBusco;
 import javaleros.frba.javaleros.models.Usuario;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/publicaciones")
@@ -47,10 +49,14 @@ public class PublicacionesController {
     @PostMapping("/buscarmascota")
     private ResponseEntity crearPublicacionDeBuscarMascota(@RequestBody PublicacionDTO publicacionDTO){
         Usuario usuario = getUsuarioLogeado();
+        List<Foto> fotos = publicacionDTO.getFotos().stream().map(fotoDto -> Foto.builder()
+                .data(fotoDto.getData())
+                .fileName(fotoDto.getFileName())
+                .build()).collect(Collectors.toList());
         Publicacion publicacionPerdida = PublicacionBusco.builder()
                 .usuario(usuario)
                 .estadoPublicacion(EstadoPublicacion.PENDIENTE)
-                //.fotos(publicacionDTO.getFotos())
+                .fotos(fotos)
                 .edad(publicacionDTO.getEdad())
                 .descripcion(publicacionDTO.getDescripcion())
                 .partido(publicacionDTO.getPartido())

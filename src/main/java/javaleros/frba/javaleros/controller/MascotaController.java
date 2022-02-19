@@ -227,6 +227,10 @@ public class MascotaController {
         if (mascotaOptional.isEmpty()) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
+      List<Foto> fotos = publicacionDTO.getFotos().stream().map(fotoDto -> Foto.builder()
+              .data(fotoDto.getData())
+              .fileName(fotoDto.getFileName())
+              .build()).collect(Collectors.toList());
         Mascota mascota = mascotaOptional.get();
         mascota.setEstado(MascotaEstadoEnum.ENADOPCION);
         mascotaService.guardarMascota(mascota);
@@ -234,7 +238,7 @@ public class MascotaController {
         Publicacion publicacionAdopcion = PublicacionAdopcion.builder()
                 .usuario(usuario)
                 .estadoPublicacion(EstadoPublicacion.PENDIENTE)
-                //.fotos(publicacionDTO.getFotos())
+                .fotos(fotos)
                 .descripcion(publicacionDTO.getDescripcion())
                 .partido(publicacionDTO.getPartido())
                 .provincia(publicacionDTO.getProvincia())
@@ -249,11 +253,15 @@ public class MascotaController {
     @PostMapping(value = "/publicarperdida")
     public ResponseEntity informarPerdida(@RequestBody PublicacionDTO publicacionDTO) {
 
+      List<Foto> fotos = publicacionDTO.getFotos().stream().map(fotoDto -> Foto.builder()
+              .data(fotoDto.getData())
+              .fileName(fotoDto.getFileName())
+              .build()).collect(Collectors.toList());
         Usuario usuario = getUsuarioLogeado();
         Publicacion publicacionPerdida = PublicacionPerdida.builder()
                 .usuario(usuario)
                 .estadoPublicacion(EstadoPublicacion.PENDIENTE)
-                //.fotos(publicacionDTO.getFotos())
+                .fotos(fotos)
                 .descripcion(publicacionDTO.getDescripcion())
                 .partido(publicacionDTO.getPartido())
                 .provincia(publicacionDTO.getProvincia())

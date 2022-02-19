@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
@@ -31,7 +32,7 @@ public class Publicacion {
   private Integer id;
   @ManyToOne
   private Usuario usuario;
-  @OneToMany
+  @OneToMany(cascade = CascadeType.ALL)
   private List<Foto> fotos;
   private String descripcion;
 

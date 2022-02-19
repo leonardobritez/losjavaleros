@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.util.List;
 @Data
 public class PublicacionDTO {
-    private List<Foto> fotos;
+    private List<FotoDto> fotos;
     private String descripcion;
     private String calle;
     private String altura;
