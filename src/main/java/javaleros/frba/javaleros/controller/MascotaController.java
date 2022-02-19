@@ -197,6 +197,10 @@ public class MascotaController {
         if (mascotaOptional.isEmpty()) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
+      List<Foto> fotos = mascotaOptional.get().getFotos().stream().map(fotoDto -> Foto.builder()
+              .data(fotoDto.getData())
+              .fileName(fotoDto.getFileName())
+              .build()).collect(Collectors.toList());
         Mascota mascota = mascotaOptional.get();
         mascota.setEstado(MascotaEstadoEnum.ENADOPCION);
         mascotaService.guardarMascota(mascota);
@@ -204,7 +208,7 @@ public class MascotaController {
         Publicacion publicacionAdopcion = PublicacionAdopcion.builder()
                 .usuario(usuario)
                 .estadoPublicacion(EstadoPublicacion.PENDIENTE)
-                .fotos(mascota.getFotos())
+                .fotos(fotos)
                 .descripcion(publicacionDTO.getDescripcion())
                 .partido(publicacionDTO.getPartido())
                 .provincia(publicacionDTO.getProvincia())
